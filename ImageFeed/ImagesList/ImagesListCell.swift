@@ -12,7 +12,6 @@ final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     
     // MARK: - IB Outlets
-    
     @IBOutlet var cardImage: UIImageView!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var label: UILabel!
@@ -37,13 +36,17 @@ final class ImagesListCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // Обновляем frame градиента при изменении размеров
         gradientLayer.frame = gradientView.bounds
+        
+        let maskPath = UIBezierPath(roundedRect: gradientView.bounds, byRoundingCorners: [ .bottomLeft, .bottomRight], cornerRadii: CGSize(width: 16, height: 16))
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = maskPath.cgPath
+        
+        gradientView.layer.mask = maskLayer
     }
     
     // MARK: - Private Methods
     private func setupGradient() {
-        // Устанавливаем начальные параметры градиента
         guard let ypBlack = UIColor(named: "YP Black") else { return }
         
         gradientLayer.colors = [
@@ -53,10 +56,8 @@ final class ImagesListCell: UITableViewCell {
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
         
-        // Удаляем предыдущие градиентные слои (если есть)
         gradientView.layer.sublayers?.removeAll(where: { $0 is CAGradientLayer })
         
-        // Добавляем градиентный слой
         gradientLayer.frame = gradientView.bounds
         gradientView.layer.insertSublayer(gradientLayer, at: 0)
     }

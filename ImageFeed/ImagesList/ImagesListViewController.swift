@@ -36,13 +36,10 @@ final class ImagesListViewController: UIViewController {
             print("Ошибка: Изображение \(imageName) не найдено")
             return
         }
+        cell.cardImage.image = cardImage
         
-        cell.cardImage.image = cardImage // Устанавливаем изображение в UIImageView
-        
-        // Устанавливаем текст с текущей датой
         cell.label.text = dateFormatter.string(from: Date())
         
-        // Устанавливаем иконку лайка
         let likeImageName = indexPath.row % 2 == 0 ? "Active" : "No Active"
         if let likeImage = UIImage(named: likeImageName) {
             cell.likeButton.setImage(likeImage, for: .normal)

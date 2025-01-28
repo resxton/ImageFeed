@@ -29,7 +29,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Ttz-7Y-ghp">
-                                                    <rect key="frame" x="16" y="16" width="361" height="268"/>
+                                                    <rect key="frame" x="16" y="4" width="361" height="292"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="16"/>
@@ -38,7 +38,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oL1-Bu-E8q">
-                                                    <rect key="frame" x="333" y="16" width="44" height="44"/>
+                                                    <rect key="frame" x="333" y="4" width="44" height="44"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" button="YES" image="YES"/>
                                                     </accessibility>
@@ -50,12 +50,10 @@
                                                     <state key="normal" title="Button" image="heart.fill" catalog="system">
                                                         <color key="titleColor" name="YP White (Alpha 50)"/>
                                                     </state>
-                                                    <buttonConfiguration key="configuration" style="plain" image="No Active">
-                                                        <color key="baseForegroundColor" name="YP White (Alpha 50)"/>
-                                                    </buttonConfiguration>
+                                                    <buttonConfiguration key="configuration" style="plain" image="Active"/>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P7R-9S-bQG">
-                                                    <rect key="frame" x="16" y="254" width="361" height="30"/>
+                                                    <rect key="frame" x="16" y="266" width="361" height="30"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a1h-RG-smU">
                                                             <rect key="frame" x="8" y="4" width="152" height="18"/>
@@ -88,17 +86,17 @@
                                                 <constraint firstAttribute="trailing" secondItem="Ttz-7Y-ghp" secondAttribute="trailing" constant="16" id="88n-J6-cpR"/>
                                                 <constraint firstItem="P7R-9S-bQG" firstAttribute="trailing" secondItem="Ttz-7Y-ghp" secondAttribute="trailing" id="EmE-8d-RbD"/>
                                                 <constraint firstItem="oL1-Bu-E8q" firstAttribute="trailing" secondItem="Ttz-7Y-ghp" secondAttribute="trailing" id="Ndr-db-8zz"/>
-                                                <constraint firstItem="Ttz-7Y-ghp" firstAttribute="top" secondItem="Cr0-di-gPx" secondAttribute="top" constant="16" id="Tff-qC-lWo"/>
+                                                <constraint firstItem="Ttz-7Y-ghp" firstAttribute="top" secondItem="Cr0-di-gPx" secondAttribute="top" constant="4" id="Tff-qC-lWo"/>
                                                 <constraint firstItem="P7R-9S-bQG" firstAttribute="bottom" secondItem="Ttz-7Y-ghp" secondAttribute="bottom" id="Uvi-Z5-O5U"/>
                                                 <constraint firstItem="Ttz-7Y-ghp" firstAttribute="leading" secondItem="Cr0-di-gPx" secondAttribute="leading" constant="16" id="Z65-TA-RK2"/>
-                                                <constraint firstAttribute="bottom" secondItem="Ttz-7Y-ghp" secondAttribute="bottom" constant="16" id="fAK-6c-Qcf"/>
+                                                <constraint firstAttribute="bottom" secondItem="Ttz-7Y-ghp" secondAttribute="bottom" constant="4" id="fAK-6c-Qcf"/>
                                                 <constraint firstItem="oL1-Bu-E8q" firstAttribute="top" secondItem="Ttz-7Y-ghp" secondAttribute="top" id="qfF-UR-NWr"/>
                                                 <constraint firstItem="P7R-9S-bQG" firstAttribute="leading" secondItem="Ttz-7Y-ghp" secondAttribute="leading" id="xUM-aO-Uuh"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="cardImage" destination="Ttz-7Y-ghp" id="YvY-oR-gm9"/>
                                             <outlet property="gradientView" destination="P7R-9S-bQG" id="tTg-Yc-2b6"/>
-                                            <outlet property="imageView" destination="Ttz-7Y-ghp" id="PBi-8u-ycr"/>
                                             <outlet property="label" destination="a1h-RG-smU" id="IIl-n4-aXv"/>
                                             <outlet property="likeButton" destination="oL1-Bu-E8q" id="aI0-PQ-eAa"/>
                                         </connections>
@@ -130,7 +128,7 @@
     </scenes>
     <resources>
         <image name="0" width="1600" height="1059"/>
-        <image name="No Active" width="42" height="42"/>
+        <image name="Active" width="42" height="42"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

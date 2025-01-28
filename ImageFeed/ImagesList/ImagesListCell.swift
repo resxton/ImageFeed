@@ -12,10 +12,11 @@ final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     
     // MARK: - IB Outlets
-    @IBOutlet private var picture: UIImageView!
-    @IBOutlet private var likeButton: UIButton!
-    @IBOutlet private var label: UILabel!
-    @IBOutlet private var gradientView: UIView!
+    
+    @IBOutlet var cardImage: UIImageView!
+    @IBOutlet var likeButton: UIButton!
+    @IBOutlet var label: UILabel!
+    @IBOutlet var gradientView: UIView!
     
     // MARK: - Private Properties
     private let gradientLayer = CAGradientLayer()
@@ -23,6 +24,11 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        likeButton.layer.shadowOpacity = 0.1
+        likeButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+        likeButton.layer.shadowColor = UIColor(named: "YP Black")?.cgColor
+        likeButton.layer.shadowRadius = 4
         
         likeButton.setTitle("", for: .normal)
         setupGradient()

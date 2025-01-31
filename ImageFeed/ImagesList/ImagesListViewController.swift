@@ -40,7 +40,7 @@ final class ImagesListViewController: UIViewController {
         
         cell.label.text = dateFormatter.string(from: Date())
         
-        let likeImageName = indexPath.row % 2 == 0 ? "Active" : "No Active"
+        let likeImageName = indexPath.row % 2 == 0 ? "Favorites-Active" : "Favorites-No Active"
         if let likeImage = UIImage(named: likeImageName) {
             cell.likeButton.setImage(likeImage, for: .normal)
         } else {

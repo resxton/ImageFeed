@@ -149,7 +149,7 @@
                     <navigationItem key="navigationItem" id="Lgr-wl-Me1"/>
                     <connections>
                         <outlet property="tableView" destination="WIW-5h-Ly9" id="Bkg-2s-mhM"/>
-                        <segue destination="U5m-tG-UJD" kind="show" identifier="ShowSingleImage" id="7Le-rt-Cog"/>
+                        <segue destination="U5m-tG-UJD" kind="presentation" identifier="ShowSingleImage" id="7Le-rt-Cog"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -269,26 +269,40 @@
         <!--Single Image View Controller-->
         <scene sceneID="bbM-3V-BWJ">
             <objects>
-                <viewController id="U5m-tG-UJD" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="U5m-tG-UJD" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zrK-6Y-XJf">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="cfj-ip-7Mx">
-                                <rect key="frame" x="0.0" y="106" width="402" height="685"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="cfj-ip-7Mx">
+                                <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8q1-gi-tXW">
+                                <rect key="frame" x="9" y="9" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="A4S-oX-uts"/>
+                                    <constraint firstAttribute="width" secondItem="8q1-gi-tXW" secondAttribute="height" multiplier="1:1" id="ivG-MB-73I"/>
+                                </constraints>
+                                <buttonConfiguration key="configuration" style="plain" image="navbar_backward"/>
+                                <connections>
+                                    <action selector="didTapBackButton:" destination="U5m-tG-UJD" eventType="touchUpInside" id="mIs-Ls-fQ9"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="atY-Bf-4S9"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="cfj-ip-7Mx" firstAttribute="leading" secondItem="atY-Bf-4S9" secondAttribute="leading" id="HFT-aY-PfA"/>
-                            <constraint firstItem="atY-Bf-4S9" firstAttribute="trailing" secondItem="cfj-ip-7Mx" secondAttribute="trailing" id="nSn-wJ-vCL"/>
-                            <constraint firstItem="atY-Bf-4S9" firstAttribute="bottom" secondItem="cfj-ip-7Mx" secondAttribute="bottom" id="ncN-7n-aWT"/>
-                            <constraint firstItem="cfj-ip-7Mx" firstAttribute="top" secondItem="atY-Bf-4S9" secondAttribute="top" id="rAP-1E-cRm"/>
+                            <constraint firstItem="8q1-gi-tXW" firstAttribute="top" secondItem="atY-Bf-4S9" secondAttribute="top" constant="9" id="F7y-8o-cz4"/>
+                            <constraint firstItem="cfj-ip-7Mx" firstAttribute="leading" secondItem="zrK-6Y-XJf" secondAttribute="leading" id="HFT-aY-PfA"/>
+                            <constraint firstItem="8q1-gi-tXW" firstAttribute="leading" secondItem="atY-Bf-4S9" secondAttribute="leading" constant="9" id="XmI-mH-VK1"/>
+                            <constraint firstAttribute="trailing" secondItem="cfj-ip-7Mx" secondAttribute="trailing" id="nSn-wJ-vCL"/>
+                            <constraint firstAttribute="bottom" secondItem="cfj-ip-7Mx" secondAttribute="bottom" id="ncN-7n-aWT"/>
+                            <constraint firstItem="cfj-ip-7Mx" firstAttribute="top" secondItem="zrK-6Y-XJf" secondAttribute="top" id="rAP-1E-cRm"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qUD-M8-dM0"/>
                     <connections>
+                        <outlet property="backButton" destination="8q1-gi-tXW" id="Qof-sZ-seA"/>
                         <outlet property="imageView" destination="cfj-ip-7Mx" id="Vxr-gF-KDv"/>
                     </connections>
                 </viewController>
@@ -328,6 +342,7 @@
         <image name="Favorites-No Photo" width="115" height="115"/>
         <image name="Logout" width="24" height="24"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
+        <image name="navbar_backward" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">

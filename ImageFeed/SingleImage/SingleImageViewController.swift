@@ -10,6 +10,7 @@ import UIKit
 final class SingleImageViewController: UIViewController {
     // MARK: - IB Outlets
     @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var backButton: UIButton!
     
     // MARK: - Public Properties
     var image: UIImage? {
@@ -24,5 +25,10 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         
         imageView.image = image
+    }
+    
+    // MARK: - IB Actions
+    @IBAction func didTapBackButton(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
 }

@@ -8,6 +8,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="YS Display-Bold.ttf">
+            <string>YSDisplay-Bold</string>
+        </array>
+        <array key="YS Display-Regular.ttf">
+            <string>YSDisplay-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Tab Bar Controller-->
         <scene sceneID="wog-B2-6vE">
@@ -22,7 +30,7 @@
                         <color key="selectedImageTintColor" name="YP White"/>
                     </tabBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="X4C-Lk-B6B"/>
+                        <segue destination="bPH-ng-EBe" kind="relationship" relationship="viewControllers" id="X4C-Lk-B6B"/>
                         <segue destination="IGA-9z-559" kind="relationship" relationship="viewControllers" id="nXX-ow-Paq"/>
                     </connections>
                 </tabBarController>
@@ -120,6 +128,7 @@
                                             <outlet property="gradientView" destination="P7R-9S-bQG" id="tTg-Yc-2b6"/>
                                             <outlet property="label" destination="a1h-RG-smU" id="IIl-n4-aXv"/>
                                             <outlet property="likeButton" destination="oL1-Bu-E8q" id="aI0-PQ-eAa"/>
+                                            <segue destination="U5m-tG-UJD" kind="show" id="oMa-oD-LQL"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -138,14 +147,14 @@
                             <constraint firstItem="WIW-5h-Ly9" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="n2B-2Z-x4G"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="Ixh-2G-gU3"/>
+                    <navigationItem key="navigationItem" id="Lgr-wl-Me1"/>
                     <connections>
                         <outlet property="tableView" destination="WIW-5h-Ly9" id="Bkg-2s-mhM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-469" y="-92"/>
+            <point key="canvasLocation" x="449.25373134328356" y="-92.677345537757432"/>
         </scene>
         <!--Profile-->
         <scene sceneID="L3Y-eN-1aa">
@@ -256,6 +265,60 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eRW-9M-qIl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-470" y="689"/>
+        </scene>
+        <!--Single Image View Controller-->
+        <scene sceneID="bbM-3V-BWJ">
+            <objects>
+                <viewController id="U5m-tG-UJD" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zrK-6Y-XJf">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="cfj-ip-7Mx">
+                                <rect key="frame" x="0.0" y="106" width="402" height="685"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="atY-Bf-4S9"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="cfj-ip-7Mx" firstAttribute="leading" secondItem="atY-Bf-4S9" secondAttribute="leading" id="HFT-aY-PfA"/>
+                            <constraint firstItem="atY-Bf-4S9" firstAttribute="trailing" secondItem="cfj-ip-7Mx" secondAttribute="trailing" id="nSn-wJ-vCL"/>
+                            <constraint firstItem="atY-Bf-4S9" firstAttribute="bottom" secondItem="cfj-ip-7Mx" secondAttribute="bottom" id="ncN-7n-aWT"/>
+                            <constraint firstItem="cfj-ip-7Mx" firstAttribute="top" secondItem="atY-Bf-4S9" secondAttribute="top" id="rAP-1E-cRm"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="qUD-M8-dM0"/>
+                    <connections>
+                        <outlet property="imageView" destination="cfj-ip-7Mx" id="Vxr-gF-KDv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YE3-kg-dQ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1418" y="-93"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="pCQ-dA-f40">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bPH-ng-EBe" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="Ixh-2G-gU3"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Rz4-LS-Hgc">
+                        <rect key="frame" x="0.0" y="62" width="402" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" name="YP White"/>
+                        <color key="barTintColor" name="YP White"/>
+                        <navigationBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" name="YP Black"/>
+                        </navigationBarAppearance>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="S5a-PG-lbM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TXn-OA-Qme" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-470.14925373134326" y="-92.677345537757432"/>
         </scene>
     </scenes>
     <resources>

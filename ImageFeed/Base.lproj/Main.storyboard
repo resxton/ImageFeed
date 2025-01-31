@@ -218,7 +218,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Избранное" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Gp-ck-OeL">
-                                <rect key="frame" x="16" y="271" width="121" height="27"/>
+                                <rect key="frame" x="15.999999999999993" y="271" width="120.33333333333331" height="27"/>
                                 <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                 <color key="textColor" name="YP White"/>
                                 <nil key="highlightedColor"/>
@@ -274,9 +274,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="cfj-ip-7Mx">
-                                <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
-                            </imageView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ucc-LN-nZp">
+                                <rect key="frame" x="-20" y="-20" width="442" height="914"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="cfj-ip-7Mx">
+                                        <rect key="frame" x="20" y="20" width="402" height="874"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <viewLayoutGuide key="contentLayoutGuide" id="V5h-Lf-otV"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Z0w-rL-pzq"/>
+                            </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8q1-gi-tXW">
                                 <rect key="frame" x="9" y="9" width="44" height="44"/>
                                 <constraints>
@@ -293,22 +302,19 @@
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="8q1-gi-tXW" firstAttribute="top" secondItem="atY-Bf-4S9" secondAttribute="top" constant="9" id="F7y-8o-cz4"/>
-                            <constraint firstItem="cfj-ip-7Mx" firstAttribute="leading" secondItem="zrK-6Y-XJf" secondAttribute="leading" id="HFT-aY-PfA"/>
                             <constraint firstItem="8q1-gi-tXW" firstAttribute="leading" secondItem="atY-Bf-4S9" secondAttribute="leading" constant="9" id="XmI-mH-VK1"/>
-                            <constraint firstAttribute="trailing" secondItem="cfj-ip-7Mx" secondAttribute="trailing" id="nSn-wJ-vCL"/>
-                            <constraint firstAttribute="bottom" secondItem="cfj-ip-7Mx" secondAttribute="bottom" id="ncN-7n-aWT"/>
-                            <constraint firstItem="cfj-ip-7Mx" firstAttribute="top" secondItem="zrK-6Y-XJf" secondAttribute="top" id="rAP-1E-cRm"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qUD-M8-dM0"/>
                     <connections>
                         <outlet property="backButton" destination="8q1-gi-tXW" id="Qof-sZ-seA"/>
                         <outlet property="imageView" destination="cfj-ip-7Mx" id="Vxr-gF-KDv"/>
+                        <outlet property="scrollView" destination="ucc-LN-nZp" id="MeK-yA-pAs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YE3-kg-dQ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1418" y="-93"/>
+            <point key="canvasLocation" x="1416.4179104477612" y="-93.363844393592672"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pCQ-dA-f40">

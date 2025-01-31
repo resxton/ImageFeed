@@ -285,7 +285,46 @@
                                 </subviews>
                                 <viewLayoutGuide key="contentLayoutGuide" id="V5h-Lf-otV"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="Z0w-rL-pzq"/>
+                                <connections>
+                                    <outlet property="delegate" destination="U5m-tG-UJD" id="cso-Q5-Rnp"/>
+                                </connections>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9b7-kR-9IE" userLabel="Share Button">
+                                <rect key="frame" x="284" y="774" width="50" height="50"/>
+                                <color key="backgroundColor" name="YP Black"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="N7e-Hp-CFe"/>
+                                    <constraint firstAttribute="width" secondItem="9b7-kR-9IE" secondAttribute="height" multiplier="1:1" id="m9L-Et-Wqa"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Sharing"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="25"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="didTapShareButton:" destination="U5m-tG-UJD" eventType="touchUpInside" id="ew4-f5-vSo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AfU-Rp-7ft" userLabel="Favorites Button">
+                                <rect key="frame" x="68" y="774" width="50" height="50"/>
+                                <color key="backgroundColor" name="YP Black"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="AfU-Rp-7ft" secondAttribute="height" multiplier="1:1" id="8jG-OA-R4O"/>
+                                    <constraint firstAttribute="height" constant="50" id="ElN-Xo-71B"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Favorites-Active White"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="25"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="didTapFavoritesButton:" destination="U5m-tG-UJD" eventType="touchUpInside" id="lFp-mf-7fI"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8q1-gi-tXW">
                                 <rect key="frame" x="9" y="9" width="44" height="44"/>
                                 <constraints>
@@ -301,8 +340,12 @@
                         <viewLayoutGuide key="safeArea" id="atY-Bf-4S9"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
+                            <constraint firstItem="atY-Bf-4S9" firstAttribute="trailing" secondItem="9b7-kR-9IE" secondAttribute="trailing" constant="68" id="1Ov-dz-aAc"/>
                             <constraint firstItem="8q1-gi-tXW" firstAttribute="top" secondItem="atY-Bf-4S9" secondAttribute="top" constant="9" id="F7y-8o-cz4"/>
+                            <constraint firstItem="atY-Bf-4S9" firstAttribute="bottom" secondItem="AfU-Rp-7ft" secondAttribute="bottom" constant="50" id="M9a-mo-HxQ"/>
                             <constraint firstItem="8q1-gi-tXW" firstAttribute="leading" secondItem="atY-Bf-4S9" secondAttribute="leading" constant="9" id="XmI-mH-VK1"/>
+                            <constraint firstItem="AfU-Rp-7ft" firstAttribute="leading" secondItem="atY-Bf-4S9" secondAttribute="leading" constant="68" id="gGr-eQ-UQ6"/>
+                            <constraint firstItem="atY-Bf-4S9" firstAttribute="bottom" secondItem="9b7-kR-9IE" secondAttribute="bottom" constant="50" id="wZV-mS-drP"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qUD-M8-dM0"/>
@@ -345,8 +388,10 @@
         <image name="0" width="1600" height="1059"/>
         <image name="Avatar" width="70" height="70"/>
         <image name="Favorites-Active" width="42" height="42"/>
+        <image name="Favorites-Active White" width="30" height="30"/>
         <image name="Favorites-No Photo" width="115" height="115"/>
         <image name="Logout" width="24" height="24"/>
+        <image name="Sharing" width="30" height="30"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="navbar_backward" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>

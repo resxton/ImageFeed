@@ -8,10 +8,21 @@
 import UIKit
 
 final class SingleImageViewController: UIViewController {
+    // MARK: - IB Outlets
+    @IBOutlet private var imageView: UIImageView!
     
-    @IBOutlet var imageView: UIImageView!
-    
+    // MARK: - Public Properties
+    var image: UIImage? {
+        didSet {
+            guard isViewLoaded else { return }
+            imageView.image = image
+        }
+    }
+
+    // MARK: - Life Cycle
     override func viewDidLoad() {
-        // code
+        super.viewDidLoad()
+        
+        imageView.image = image
     }
 }

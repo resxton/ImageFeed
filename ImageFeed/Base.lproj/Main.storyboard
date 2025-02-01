@@ -237,12 +237,13 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8q1-gi-tXW">
-                                <rect key="frame" x="9" y="9" width="44" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="A4S-oX-uts"/>
                                     <constraint firstAttribute="width" secondItem="8q1-gi-tXW" secondAttribute="height" multiplier="1:1" id="ivG-MB-73I"/>
                                 </constraints>
-                                <buttonConfiguration key="configuration" style="plain" image="navbar_backward"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="1" maxX="1" maxY="0.0"/>
+                                <state key="normal" image="navbar_backward"/>
                                 <connections>
                                     <action selector="didTapBackButton:" destination="U5m-tG-UJD" eventType="touchUpInside" id="mIs-Ls-fQ9"/>
                                 </connections>
@@ -252,9 +253,9 @@
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="atY-Bf-4S9" firstAttribute="trailing" secondItem="9b7-kR-9IE" secondAttribute="trailing" constant="68" id="1Ov-dz-aAc"/>
-                            <constraint firstItem="8q1-gi-tXW" firstAttribute="top" secondItem="atY-Bf-4S9" secondAttribute="top" constant="9" id="F7y-8o-cz4"/>
+                            <constraint firstItem="8q1-gi-tXW" firstAttribute="top" secondItem="atY-Bf-4S9" secondAttribute="top" id="F7y-8o-cz4"/>
                             <constraint firstItem="atY-Bf-4S9" firstAttribute="bottom" secondItem="AfU-Rp-7ft" secondAttribute="bottom" constant="50" id="M9a-mo-HxQ"/>
-                            <constraint firstItem="8q1-gi-tXW" firstAttribute="leading" secondItem="atY-Bf-4S9" secondAttribute="leading" constant="9" id="XmI-mH-VK1"/>
+                            <constraint firstItem="8q1-gi-tXW" firstAttribute="leading" secondItem="atY-Bf-4S9" secondAttribute="leading" id="XmI-mH-VK1"/>
                             <constraint firstItem="AfU-Rp-7ft" firstAttribute="leading" secondItem="atY-Bf-4S9" secondAttribute="leading" constant="68" id="gGr-eQ-UQ6"/>
                             <constraint firstItem="atY-Bf-4S9" firstAttribute="bottom" secondItem="9b7-kR-9IE" secondAttribute="bottom" constant="50" id="wZV-mS-drP"/>
                         </constraints>

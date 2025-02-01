@@ -175,7 +175,6 @@ class ProfileViewController: UIViewController {
         guard let noPhotoImageView else { return }
         
         // Basic setup
-        noPhotoImageView.layer.cornerRadius = 35
         view.addSubview(noPhotoImageView)
         
         // Constraints

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
     private let avatarImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "Avatar"))

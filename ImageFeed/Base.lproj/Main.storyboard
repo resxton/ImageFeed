@@ -76,10 +76,7 @@
                                                         <constraint firstAttribute="height" constant="44" id="jQv-v4-rh5"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title="Button" image="heart.fill" catalog="system">
-                                                        <color key="titleColor" name="YP White (Alpha 50)"/>
-                                                    </state>
-                                                    <buttonConfiguration key="configuration" style="plain" image="Favorites-Active"/>
+                                                    <state key="normal" image="Favorites-Active"/>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P7R-9S-bQG">
                                                     <rect key="frame" x="16" y="266" width="370" height="30"/>
@@ -394,7 +391,6 @@
         <image name="Favorites-No Photo" width="115" height="115"/>
         <image name="Logout" width="24" height="24"/>
         <image name="Sharing" width="30" height="30"/>
-        <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="navbar_backward" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
@@ -406,9 +402,6 @@
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="YP White (Alpha 50)">
-            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

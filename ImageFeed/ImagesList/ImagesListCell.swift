@@ -13,8 +13,11 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - IB Outlets
     @IBOutlet var cardImage: UIImageView!
+    
     @IBOutlet var likeButton: UIButton!
+    
     @IBOutlet var label: UILabel!
+    
     @IBOutlet var gradientView: UIView!
     
     // MARK: - Private Properties
@@ -29,7 +32,6 @@ final class ImagesListCell: UITableViewCell {
         likeButton.layer.shadowColor = UIColor(named: "YP Black")?.cgColor
         likeButton.layer.shadowRadius = 4
         
-        likeButton.setTitle("", for: .normal)
         setupGradient()
     }
     

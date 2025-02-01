@@ -27,6 +27,9 @@ final class SingleImageViewController: UIViewController {
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
+    
+    // MARK: - Private Properties
+    private var isFavorite = false
 
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -54,6 +57,14 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapFavoritesButton(_ sender: Any) {
+        if isFavorite {
+            favoritesButton.setImage(UIImage(named: "Favorites-Big No Active"), for: .normal)
+        } else {
+            favoritesButton.setImage(UIImage(named: "Favorites-Big Active"), for: .normal)
+        }
+        
+        isFavorite.toggle()
+        
         print("tapped favorites button")
     }
     

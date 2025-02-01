@@ -226,7 +226,7 @@
                                     <constraint firstAttribute="height" constant="50" id="ElN-Xo-71B"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Favorites-Active White"/>
+                                <state key="normal" image="Favorites-Big No Active"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="25"/>
@@ -276,7 +276,7 @@
     <resources>
         <image name="0" width="1600" height="1059"/>
         <image name="Favorites-Active" width="42" height="42"/>
-        <image name="Favorites-Active White" width="30" height="30"/>
+        <image name="Favorites-Big No Active" width="30" height="30"/>
         <image name="Sharing" width="30" height="30"/>
         <image name="navbar_backward" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>

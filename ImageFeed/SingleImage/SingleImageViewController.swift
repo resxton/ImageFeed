@@ -12,6 +12,8 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     
     @IBOutlet private var backButton: UIButton!
+    @IBOutlet private var favoritesButton: UIButton!
+    @IBOutlet private var shareButton: UIButton!
     
     @IBOutlet private var scrollView: UIScrollView!
     
@@ -87,7 +89,6 @@ final class SingleImageViewController: UIViewController {
         imageView.frame.size = CGSize(width: imageSize.width * scale, height: imageSize.height * scale)
         imageView.center = CGPoint(x: scrollView.bounds.midX, y: scrollView.bounds.midY)
     }
-
     
     private func centerImageInScrollView(image: UIImage) {
         let boundsSize = scrollView.bounds.size
@@ -101,6 +102,7 @@ final class SingleImageViewController: UIViewController {
     }
 }
 
+// MARK: - ScrollView Delegate
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView

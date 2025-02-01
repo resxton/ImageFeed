@@ -351,8 +351,10 @@
                     <navigationItem key="navigationItem" id="qUD-M8-dM0"/>
                     <connections>
                         <outlet property="backButton" destination="8q1-gi-tXW" id="Qof-sZ-seA"/>
+                        <outlet property="favoritesButton" destination="AfU-Rp-7ft" id="p2h-wF-tuN"/>
                         <outlet property="imageView" destination="cfj-ip-7Mx" id="Vxr-gF-KDv"/>
                         <outlet property="scrollView" destination="ucc-LN-nZp" id="MeK-yA-pAs"/>
+                        <outlet property="shareButton" destination="9b7-kR-9IE" id="qzE-XZ-9OC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YE3-kg-dQ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

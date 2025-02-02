@@ -75,13 +75,10 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Private Methods
     private func setupUI() {
-        view.addSubview(avatarImageView)
-        view.addSubview(logoutButton)
-        view.addSubview(nameLabel)
-        view.addSubview(tagLabel)
-        view.addSubview(descriptionLabel)
-        view.addSubview(favoritesLabel)
-        view.addSubview(noPhotoImageView)
+        [avatarImageView, logoutButton, nameLabel, tagLabel, descriptionLabel, favoritesLabel, noPhotoImageView].forEach {
+            view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         
         logoutButton.addTarget(self, action: #selector(didTapLogoutButton), for: .touchUpInside)
         
@@ -127,6 +124,6 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapLogoutButton() {
-        print("did tap logout button")
+        // TODO: - Добавить логику при нажатии на кнопку логаута
     }
 }

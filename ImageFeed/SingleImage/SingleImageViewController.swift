@@ -65,7 +65,7 @@ final class SingleImageViewController: UIViewController {
         
         isFavorite.toggle()
         
-        print("tapped favorites button")
+        // TODO: - Добавить логику при нажатии на кнопку лайка
     }
     
     // MARK: - Private Methods

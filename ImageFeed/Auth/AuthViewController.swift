@@ -8,8 +8,13 @@
 import UIKit
 
 class AuthViewController: UIViewController {
+    // MARK: - Private Properties
+    let segweyID = "ShowWebView"
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
-        print("Auth view did load")
+        
     }
+    
+    // MARK: - Private Methods
 }

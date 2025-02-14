@@ -78,7 +78,8 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="rUo-1z-zys" kind="presentation" modalPresentationStyle="overFullScreen" id="CFP-78-K4U"/>
+                                    <action selector="didTapLoginButton:" destination="ZBR-yC-K58" eventType="touchUpInside" id="HeZ-7D-eF3"/>
+                                    <segue destination="rUo-1z-zys" kind="presentation" identifier="ShowWebView" modalPresentationStyle="overFullScreen" id="CFP-78-K4U"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unsplash_logo" translatesAutoresizingMaskIntoConstraints="NO" id="G5A-7F-61W">
@@ -361,20 +362,27 @@
                                     <action selector="didTapBackButton:" destination="rUo-1z-zys" eventType="touchUpInside" id="0zP-2b-SZq"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Yid-eo-dG4">
+                                <rect key="frame" x="0.0" y="44" width="402" height="4"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="i55-Lz-8eL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="ic1-KY-ABo" secondAttribute="bottom" id="MG8-Xi-Lfb"/>
                             <constraint firstItem="ic1-KY-ABo" firstAttribute="top" secondItem="J1X-rZ-sxf" secondAttribute="top" id="P7k-7u-W8G"/>
+                            <constraint firstItem="Yid-eo-dG4" firstAttribute="leading" secondItem="J1X-rZ-sxf" secondAttribute="leading" id="RkK-Pf-GLc"/>
                             <constraint firstAttribute="trailing" secondItem="ic1-KY-ABo" secondAttribute="trailing" id="dQB-oH-y3Y"/>
                             <constraint firstItem="19b-q6-0Wf" firstAttribute="leading" secondItem="J1X-rZ-sxf" secondAttribute="leading" id="ddK-Yh-WKp"/>
+                            <constraint firstAttribute="trailing" secondItem="Yid-eo-dG4" secondAttribute="trailing" id="dwq-R8-ujM"/>
+                            <constraint firstItem="Yid-eo-dG4" firstAttribute="top" secondItem="19b-q6-0Wf" secondAttribute="bottom" id="mag-6s-Bzj"/>
                             <constraint firstItem="19b-q6-0Wf" firstAttribute="top" secondItem="i55-Lz-8eL" secondAttribute="top" id="otp-ud-way"/>
                             <constraint firstItem="ic1-KY-ABo" firstAttribute="leading" secondItem="J1X-rZ-sxf" secondAttribute="leading" id="sUr-Ku-Ugb"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="backButton" destination="19b-q6-0Wf" id="UKj-Ks-OEP"/>
+                        <outlet property="progressView" destination="Yid-eo-dG4" id="ibm-jj-4Pm"/>
                         <outlet property="webView" destination="ic1-KY-ABo" id="zT5-lW-HLz"/>
                     </connections>
                 </viewController>

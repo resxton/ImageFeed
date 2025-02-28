@@ -16,6 +16,9 @@ final class WebViewViewController: UIViewController {
     
     weak var delegate: WebViewViewControllerDelegate?
     
+    // MARK: - Private Properties
+    private let isDeletingCookie = false
+    
     // MARK: - IB Outlets
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var backButton: UIButton!
@@ -31,6 +34,7 @@ final class WebViewViewController: UIViewController {
         setUpBackButton()
         setUpProgressView()
         loadAuthView()
+        if isDeletingCookie { clearWebViewCookies() }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -51,7 +55,6 @@ final class WebViewViewController: UIViewController {
         delegate?.webViewViewControllerDidCancel(self)
     }
     
-    
     // MARK: - Private Methods
     private func setUpBackButton() {
         backButton.tintColor = UIColor.ypBlack
@@ -64,7 +67,6 @@ final class WebViewViewController: UIViewController {
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-        print(webView.estimatedProgress)
     }
     
     private func loadAuthView() {
@@ -98,8 +100,20 @@ final class WebViewViewController: UIViewController {
             return nil
         }
     }
+    
+    private func clearWebViewCookies() {
+        let dataStore = WKWebsiteDataStore.default()
+        dataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                dataStore.removeData(ofTypes: record.dataTypes, for: [record]) {
+                    print("Удалены данные: \(record.displayName)")
+                }
+            }
+        }
+    }
 }
 
+// MARK: - WKNavigationDelegate
 extension WebViewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,

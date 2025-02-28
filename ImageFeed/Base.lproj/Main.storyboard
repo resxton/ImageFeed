@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ZBR-yC-K58">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fbO-WR-bmf">
     <device id="retina6_3" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -13,7 +13,8 @@
         <!--Tab Bar Controller-->
         <scene sceneID="wog-B2-6vE">
             <objects>
-                <tabBarController id="3Ha-wm-ZBb" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarController" id="3Ha-wm-ZBb" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="tRc-dd-z8W"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="Fz7-8u-JBE">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -46,6 +47,25 @@
             </objects>
             <point key="canvasLocation" x="-677.61194029850742" y="270.48054919908463"/>
         </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="nCX-Hf-CYP">
+            <objects>
+                <viewController id="fbO-WR-bmf" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qOk-EU-x8d">
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Kgs-xH-Ul8"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                    </view>
+                    <connections>
+                        <segue destination="ZBR-yC-K58" kind="presentation" identifier="AuthFlow" modalPresentationStyle="fullScreen" id="Xmz-0L-rOe"/>
+                        <segue destination="3Ha-wm-ZBb" kind="presentation" identifier="GalleryFlow" modalPresentationStyle="fullScreen" id="Fgu-uh-fNf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BiM-sI-uBu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2194" y="-168"/>
+        </scene>
         <!--AuthViewController-->
         <scene sceneID="243-MP-NNL">
             <objects>
@@ -55,7 +75,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eTz-Kp-pod">
-                                <rect key="frame" x="16" y="702" width="370" height="48"/>
+                                <rect key="frame" x="16" y="736" width="370" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="q9h-YI-eC2"/>
@@ -78,12 +98,11 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="didTapLoginButton:" destination="ZBR-yC-K58" eventType="touchUpInside" id="HeZ-7D-eF3"/>
                                     <segue destination="rUo-1z-zys" kind="presentation" identifier="ShowWebView" modalPresentationStyle="overFullScreen" id="CFP-78-K4U"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unsplash_logo" translatesAutoresizingMaskIntoConstraints="NO" id="G5A-7F-61W">
-                                <rect key="frame" x="171" y="298" width="60" height="60"/>
+                                <rect key="frame" x="171" y="236" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="23U-qQ-nyu"/>
                                     <constraint firstAttribute="width" constant="60" id="IL0-iG-kVm"/>
@@ -100,21 +119,24 @@
                             <constraint firstItem="yee-vw-LoC" firstAttribute="trailing" secondItem="eTz-Kp-pod" secondAttribute="trailing" constant="16" id="i0f-eC-MDI"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <segue destination="3Ha-wm-ZBb" kind="presentation" identifier="SuccessLogin" id="lfF-e1-rr9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sle-cL-Fbr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2558" y="270"/>
+            <point key="canvasLocation" x="-678" y="-752"/>
         </scene>
         <!--ImageList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="402" height="791"/>
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="815"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="WIW-5h-Ly9">
-                                <rect key="frame" x="0.0" y="62" width="402" height="729"/>
+                                <rect key="frame" x="0.0" y="0.0" width="402" height="815"/>
                                 <color key="backgroundColor" name="YP Black"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="300" id="gIi-Zx-Xv2" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
@@ -226,7 +248,7 @@
             <objects>
                 <viewController title="Profile" id="IGA-9z-559" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gXI-V4-KSd">
-                        <rect key="frame" x="0.0" y="0.0" width="402" height="791"/>
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="815"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="knw-py-Ird"/>
                         <color key="backgroundColor" name="YP Black"/>
@@ -388,9 +410,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="31c-Kv-XWy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1616.4179104477612" y="269.79405034324941"/>
+            <point key="canvasLocation" x="406" y="-752"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="lfF-e1-rr9"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="0" width="1600" height="1059"/>
         <image name="Favorites-Active" width="42" height="42"/>

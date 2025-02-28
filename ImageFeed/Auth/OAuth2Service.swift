@@ -17,10 +17,16 @@ final class OAuth2Service {
     
     // MARK: - Public Methods
     public func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let fulfillCompletionOnTheMainThread: (Result<String, Error>) -> Void = { result in
+            DispatchQueue.main.async {
+                completion(result)
+            }
+        }
+        
         guard let tokenRequest = makeOAuthTokenRequest(code: code) else {
             let error = NetworkError.invalidRequest
             print("Ошибка создания URLRequest: \(error)")
-            completion(.failure(error))
+            fulfillCompletionOnTheMainThread(.failure(error))
             return
         }
         
@@ -32,10 +38,10 @@ final class OAuth2Service {
                     let tokenResponse = try decoder.decode(OAuthTokenResponseBody.self, from: data)
                     self.storage.token = tokenResponse.accessToken
                     print("Успешно получен токен: \(tokenResponse.accessToken)")
-                    completion(.success(tokenResponse.accessToken))
+                    fulfillCompletionOnTheMainThread(.success(tokenResponse.accessToken))
                 } catch {
                     print("Ошибка декодирования JSON: \(error.localizedDescription)")
-                    completion(.failure(error))
+                    fulfillCompletionOnTheMainThread(.failure(error))
                 }
             case .failure(let error):
                 switch error {
@@ -48,7 +54,8 @@ final class OAuth2Service {
                 default:
                     print("Неизвестная ошибка: \(error.localizedDescription)")
                 }
-                completion(.failure(error))
+                
+                fulfillCompletionOnTheMainThread(.failure(error))
             }
         }
         

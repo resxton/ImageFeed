@@ -13,7 +13,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="wog-B2-6vE">
             <objects>
-                <tabBarController storyboardIdentifier="TabBarController" id="3Ha-wm-ZBb" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="3Ha-wm-ZBb" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="tRc-dd-z8W"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="Fz7-8u-JBE">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
@@ -119,9 +119,6 @@
                             <constraint firstItem="yee-vw-LoC" firstAttribute="trailing" secondItem="eTz-Kp-pod" secondAttribute="trailing" constant="16" id="i0f-eC-MDI"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <segue destination="3Ha-wm-ZBb" kind="presentation" identifier="SuccessLogin" id="lfF-e1-rr9"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sle-cL-Fbr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -132,11 +129,11 @@
             <objects>
                 <viewController title="ImageList" id="BYZ-38-t0r" customClass="ImagesListViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="402" height="815"/>
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="825"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="WIW-5h-Ly9">
-                                <rect key="frame" x="0.0" y="0.0" width="402" height="815"/>
+                                <rect key="frame" x="0.0" y="0.0" width="402" height="825"/>
                                 <color key="backgroundColor" name="YP Black"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="300" id="gIi-Zx-Xv2" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
@@ -248,7 +245,7 @@
             <objects>
                 <viewController title="Profile" id="IGA-9z-559" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gXI-V4-KSd">
-                        <rect key="frame" x="0.0" y="0.0" width="402" height="815"/>
+                        <rect key="frame" x="0.0" y="0.0" width="402" height="825"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="knw-py-Ird"/>
                         <color key="backgroundColor" name="YP Black"/>
@@ -413,9 +410,6 @@
             <point key="canvasLocation" x="406" y="-752"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="lfF-e1-rr9"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="0" width="1600" height="1059"/>
         <image name="Favorites-Active" width="42" height="42"/>

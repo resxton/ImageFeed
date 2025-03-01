@@ -54,8 +54,21 @@
                     <view key="view" contentMode="scaleToFill" id="qOk-EU-x8d">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Vector" translatesAutoresizingMaskIntoConstraints="NO" id="n7Z-Gs-Vmj">
+                                <rect key="frame" x="164.66666666666666" y="290" width="73" height="76"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="73" id="Jai-p7-ttc"/>
+                                    <constraint firstAttribute="height" constant="76" id="qUp-Vw-ETI"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Kgs-xH-Ul8"/>
                         <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="n7Z-Gs-Vmj" firstAttribute="centerX" secondItem="qOk-EU-x8d" secondAttribute="centerX" id="gcA-4K-6ko"/>
+                            <constraint firstItem="n7Z-Gs-Vmj" firstAttribute="top" secondItem="Kgs-xH-Ul8" secondAttribute="top" constant="228" id="tfm-5s-O26"/>
+                        </constraints>
                     </view>
                     <connections>
                         <segue destination="ZBR-yC-K58" kind="presentation" identifier="AuthFlow" modalPresentationStyle="fullScreen" id="Xmz-0L-rOe"/>
@@ -415,6 +428,7 @@
         <image name="Favorites-Active" width="42" height="42"/>
         <image name="Favorites-Big No Active" width="30" height="30"/>
         <image name="Sharing" width="30" height="30"/>
+        <image name="Vector" width="75" height="78"/>
         <image name="nav_back_button_dark" width="24" height="24"/>
         <image name="navbar_backward" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>

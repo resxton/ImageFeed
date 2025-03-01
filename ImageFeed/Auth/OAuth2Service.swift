@@ -9,14 +9,14 @@ import Foundation
 
 final class OAuth2Service {
     // MARK: - Public Properties
-    static public let shared = OAuth2Service()
-    public let storage = OAuth2TokenStorage()
+    static let shared = OAuth2Service()
+    let storage = OAuth2TokenStorage()
     
     // MARK: - Initializers
     private init() {}
     
     // MARK: - Public Methods
-    public func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         let fulfillCompletionOnTheMainThread: (Result<String, Error>) -> Void = { result in
             DispatchQueue.main.async {
                 completion(result)
@@ -30,7 +30,9 @@ final class OAuth2Service {
             return
         }
         
-        let task = URLSession.shared.data(for: tokenRequest) { result in
+        let task = URLSession.shared.data(for: tokenRequest) { [weak self] result in
+            guard let self else { return }
+            
             switch result {
             case .success(let data):
                 do {

@@ -12,16 +12,31 @@ final class OAuth2Service {
     static let shared = OAuth2Service()
     let storage = OAuth2TokenStorage()
     
+    // MARK: - Private Properties
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
     // MARK: - Initializers
     private init() {}
     
     // MARK: - Public Methods
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        
         let fulfillCompletionOnTheMainThread: (Result<String, Error>) -> Void = { result in
             DispatchQueue.main.async {
                 completion(result)
             }
         }
+        
+        guard lastCode != code else {
+            fulfillCompletionOnTheMainThread(.failure(NetworkError.invalidRequest))
+            return
+        }
+
+        task?.cancel()
+        lastCode = code
         
         guard let tokenRequest = makeOAuthTokenRequest(code: code) else {
             let error = NetworkError.invalidRequest
@@ -30,8 +45,15 @@ final class OAuth2Service {
             return
         }
         
-        let task = URLSession.shared.data(for: tokenRequest) { [weak self] result in
+        let task = urlSession.data(for: tokenRequest) { [weak self] result in
             guard let self else { return }
+            
+            defer {
+                DispatchQueue.main.async {
+                    self.task = nil
+                    self.lastCode = nil
+                }
+            }
             
             switch result {
             case .success(let data):

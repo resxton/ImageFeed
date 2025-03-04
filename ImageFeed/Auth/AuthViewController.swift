@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 final class AuthViewController: UIViewController {
     // MARK: - Public Properties
@@ -29,14 +30,20 @@ extension AuthViewController: WebViewViewControllerDelegate {
         vc.dismiss(animated: true) { [weak self] in
             guard self != nil else { return }
             
+            ProgressHUD.animate()
+            
             OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
                 guard let self else { return }
+                
+                ProgressHUD.dismiss()
+                
                 switch result {
                 case .success(let token):
                     print("OAuth Token: \(token)")
                     self.dismiss(animated: true)
                 case .failure(let error):
                     print("Error fetching token: \(error.localizedDescription)")
+                    break
                 }
             }
         }

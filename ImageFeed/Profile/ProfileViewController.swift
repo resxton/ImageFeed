@@ -125,5 +125,7 @@ final class ProfileViewController: UIViewController {
     
     @objc private func didTapLogoutButton() {
         // TODO: - Добавить логику при нажатии на кнопку логаута
+        OAuth2TokenStorage().clearToken()
+        self.dismiss(animated: true)
     }
 }

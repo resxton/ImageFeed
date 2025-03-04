@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3CBFD55F2D7739B8005CA1BA /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 3CBFD55E2D7739B8005CA1BA /* ProgressHUD */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		3C3D1B3B2D4599A500D5287C /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CBFD55F2D7739B8005CA1BA /* ProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = ImageFeed;
 			packageProductDependencies = (
+				3CBFD55E2D7739B8005CA1BA /* ProgressHUD */,
 			);
 			productName = ImageFeed;
 			productReference = 3C3D1B3B2D4599A500D5287C /* ImageFeed.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = 3C3D1B322D4599A500D5287C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3CBFD55D2D7739B8005CA1BA /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3C3D1B3C2D4599A500D5287C /* Products */;
 			projectDirPath = "";
@@ -345,6 +354,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3CBFD55D2D7739B8005CA1BA /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3CBFD55E2D7739B8005CA1BA /* ProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CBFD55D2D7739B8005CA1BA /* XCRemoteSwiftPackageReference "ProgressHUD" */;
+			productName = ProgressHUD;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3C3D1B332D4599A500D5287C /* Project object */;
 }

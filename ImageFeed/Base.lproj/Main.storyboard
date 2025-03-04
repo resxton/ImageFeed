@@ -337,7 +337,7 @@
                                     <constraint firstAttribute="width" secondItem="8q1-gi-tXW" secondAttribute="height" multiplier="1:1" id="ivG-MB-73I"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="1" maxX="1" maxY="0.0"/>
-                                <state key="normal" image="navbar_backward"/>
+                                <state key="normal" image="nav_back_button_light"/>
                                 <connections>
                                     <action selector="didTapBackButton:" destination="U5m-tG-UJD" eventType="touchUpInside" id="mIs-Ls-fQ9"/>
                                 </connections>
@@ -432,7 +432,7 @@
         <image name="Sharing" width="30" height="30"/>
         <image name="Vector" width="75" height="78"/>
         <image name="nav_back_button_dark" width="24" height="24"/>
-        <image name="navbar_backward" width="24" height="24"/>
+        <image name="nav_back_button_light" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <image name="unsplash_logo" width="60" height="60"/>

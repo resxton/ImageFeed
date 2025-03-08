@@ -16,6 +16,11 @@ final class ProfileService {
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     
+    private(set) var profile: Profile?
+    
+    // MARK: - Initializers
+    private init() {}
+    
     // MARK: - Public Methods
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
@@ -57,7 +62,9 @@ final class ProfileService {
                     let decoder = JSONDecoder()
                     let profileResponse = try decoder.decode(ProfileResult.self, from: data)
                     print("Успешно получен профиль: \(profileResponse)")
-                    fulfillCompletionOnTheMainThread(.success(Profile(from: profileResponse)))
+                    let profile = Profile(from: profileResponse)
+                    self.profile = profile
+                    fulfillCompletionOnTheMainThread(.success(profile))
                 } catch {
                     print("Ошибка декодирования JSON: \(error.localizedDescription)")
                     fulfillCompletionOnTheMainThread(.failure(error))

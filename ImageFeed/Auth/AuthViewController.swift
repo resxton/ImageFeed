@@ -40,7 +40,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 switch result {
                 case .success(let token):
                     print("OAuth Token: \(token)")
-                    self.dismiss(animated: true)
+                    delegate?.didAuthenticate(self)
                 case .failure(let error):
                     print("Error fetching token: \(error.localizedDescription)")
                     break

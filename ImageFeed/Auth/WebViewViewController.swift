@@ -17,7 +17,7 @@ final class WebViewViewController: UIViewController {
     weak var delegate: WebViewViewControllerDelegate?
     
     // MARK: - Private Properties
-    private let isDeletingCookie = true
+    private let isDeletingCookie = false
     
     // MARK: - IB Outlets
     @IBOutlet private var webView: WKWebView!

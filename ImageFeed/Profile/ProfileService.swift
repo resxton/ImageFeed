@@ -1,57 +1,53 @@
 //
-//  OAuth2Service.swift
+//  ProfileService.swift
 //  ImageFeed
 //
-//  Created by Сомов Кирилл on 14.02.2025.
+//  Created by Сомов Кирилл on 08.03.2025.
 //
 
-import Foundation
+import UIKit
 
-final class OAuth2Service {
+final class ProfileService {
     // MARK: - Public Properties
-    static let shared = OAuth2Service()
+    static let shared = ProfileService()
     
     // MARK: - Private Properties
-    private let storage = OAuth2TokenStorage()
+    private var lastToken: String?
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
-    private var lastCode: String?
-    
-    // MARK: - Initializers
-    private init() {}
     
     // MARK: - Public Methods
-    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         
-        let fulfillCompletionOnTheMainThread: (Result<String, Error>) -> Void = { result in
+        let fulfillCompletionOnTheMainThread: (Result<Profile, Error>) -> Void = { result in
             DispatchQueue.main.async {
                 completion(result)
             }
         }
         
-        guard lastCode != code else {
+        guard token != lastToken else {
             fulfillCompletionOnTheMainThread(.failure(NetworkError.invalidRequest))
             return
         }
-
-        task?.cancel()
-        lastCode = code
         
-        guard let tokenRequest = makeOAuthTokenRequest(code: code) else {
+        task?.cancel()
+        lastToken = token
+        
+        guard let profileRequest = makeProfileRequest(token: token) else {
             let error = NetworkError.invalidRequest
             print("Ошибка создания URLRequest: \(error)")
             fulfillCompletionOnTheMainThread(.failure(error))
             return
         }
         
-        let task = urlSession.data(for: tokenRequest) { [weak self] result in
+        let task = urlSession.data(for: profileRequest) { [weak self] result in
             guard let self else { return }
             
             defer {
                 DispatchQueue.main.async {
                     self.task = nil
-                    self.lastCode = nil
+                    self.lastToken = nil
                 }
             }
             
@@ -59,14 +55,14 @@ final class OAuth2Service {
             case .success(let data):
                 do {
                     let decoder = JSONDecoder()
-                    let tokenResponse = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                    self.storage.token = tokenResponse.accessToken
-                    print("Успешно получен токен: \(tokenResponse.accessToken)")
-                    fulfillCompletionOnTheMainThread(.success(tokenResponse.accessToken))
+                    let profileResponse = try decoder.decode(ProfileResult.self, from: data)
+                    print("Успешно получен профиль: \(profileResponse)")
+                    fulfillCompletionOnTheMainThread(.success(Profile(from: profileResponse)))
                 } catch {
                     print("Ошибка декодирования JSON: \(error.localizedDescription)")
                     fulfillCompletionOnTheMainThread(.failure(error))
                 }
+
             case .failure(let error):
                 switch error {
                 case NetworkError.httpStatusCode(let statusCode):
@@ -87,22 +83,15 @@ final class OAuth2Service {
     }
     
     // MARK: - Private Methods
-    private func makeOAuthTokenRequest(code: String) -> URLRequest? {
-        guard let baseURL = URL(string: "https://unsplash.com"),
-              let url = URL(
-                 string: "/oauth/token"
-                 + "?client_id=\(Constants.accessKey)"
-                 + "&&client_secret=\(Constants.secretKey)"
-                 + "&&redirect_uri=\(Constants.redirectURI)"
-                 + "&&code=\(code)"
-                 + "&&grant_type=authorization_code",
-                 relativeTo: baseURL
-              ) else {
+    private func makeProfileRequest(token: String) -> URLRequest? {
+        guard let url = URL(string: "https://api.unsplash.com/me") else {
             return nil
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = "GET"
+        
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
 }

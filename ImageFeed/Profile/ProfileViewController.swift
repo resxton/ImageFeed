@@ -71,9 +71,34 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        fetchProfile()
     }
     
     // MARK: - Private Methods
+    private func fetchProfile() {
+        guard let token = OAuth2TokenStorage().token else {
+            print("No token")
+            return
+        }
+        
+        ProfileService.shared.fetchProfile(token) { result in
+            switch result {
+            case .success(let profile):
+                DispatchQueue.main.async {
+                    self.updateData(with: profile)
+                }
+            case .failure(let error):
+                print("\(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func updateData(with profile: Profile) {
+        nameLabel.text = profile.name
+        tagLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
+    
     private func setupUI() {
         [avatarImageView, logoutButton, nameLabel, tagLabel, descriptionLabel, favoritesLabel, noPhotoImageView].forEach {
             view.addSubview($0)

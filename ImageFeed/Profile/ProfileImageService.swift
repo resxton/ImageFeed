@@ -60,9 +60,9 @@ final class ProfileImageService {
             
             switch result {
             case .success(let profileImageResponse):
-                print("[ProfileImageService.fetchProfileImageURL]: Успешно получен аватар: \(profileImageResponse.profileImage.small)")
+                print("[ProfileImageService.fetchProfileImageURL]: Успешно получен аватар: \(profileImageResponse.profileImage.large)")
                 
-                let profileImageURL = profileImageResponse.profileImage.small
+                let profileImageURL = profileImageResponse.profileImage.large
                 self.avatarURL = profileImageURL
                 fulfillCompletionOnTheMainThread(.success(profileImageURL))
                 NotificationCenter.default.post(name: ProfileImageService.didChangeNotification, object: self, userInfo: ["URL": profileImageURL])

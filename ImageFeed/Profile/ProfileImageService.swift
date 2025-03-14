@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 final class ProfileImageService {
     // MARK: - Public Properties
@@ -98,7 +99,7 @@ final class ProfileImageService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        guard let token = OAuth2TokenStorage().token else { return nil }
+        guard let token = KeychainWrapper.standard.string(forKey: "Auth token") else { return nil }
         
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request

@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import SwiftKeychainWrapper
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
@@ -152,6 +153,6 @@ final class ProfileViewController: UIViewController {
     
     @objc private func didTapLogoutButton() {
         // TODO: - Добавить логику при нажатии на кнопку логаута
-        OAuth2TokenStorage().clearToken()
+        let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: "Auth token")
     }
 }

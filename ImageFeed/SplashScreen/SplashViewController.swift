@@ -6,12 +6,12 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
     // MARK: - Private Properties
     private var authSegueID = "AuthFlow"
     private var gallerySegueID = "GalleryFlow"
-    private let storage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     
@@ -19,9 +19,7 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // OAuth2TokenStorage().clearToken()
-        
-        guard storage.token != nil else {
+        guard KeychainWrapper.standard.string(forKey: "Auth token") != nil else {
             performSegue(withIdentifier: authSegueID, sender: self)
             return
         }
@@ -53,12 +51,11 @@ extension SplashViewController {
             
             viewController.delegate = self
         } else if segue.identifier == gallerySegueID {
-            guard let token = storage.token else {
+            guard let token = KeychainWrapper.standard.string(forKey: "Auth token") else {
                 return
             }
             
             fetchProfile(token)
-            
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -69,7 +66,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
         
-        guard let token = storage.token else {
+        guard let token = KeychainWrapper.standard.string(forKey: "Auth token") else {
             return
         }
         
@@ -86,9 +83,10 @@ extension SplashViewController: AuthViewControllerDelegate {
             
             switch result {
             case .success:
-                self.switchToTabBarController()
+                DispatchQueue.main.async {
+                    self.switchToTabBarController()
+                }
             case .failure:
-                // TODO: [Sprint 11] Покажите ошибку получения профиля
                 print("Ошибка получения профиля")
                 break
             }

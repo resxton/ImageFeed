@@ -9,11 +9,12 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private let avatarImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "Avatar"))
         imageView.layer.cornerRadius = 35
         imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -21,7 +22,6 @@ final class ProfileViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "Logout"), for: .normal)
         button.tintColor = .ypRed
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -30,7 +30,6 @@ final class ProfileViewController: UIViewController {
         label.text = "Екатерина Новикова"
         label.font = UIFont(name: "YSDisplay-Bold", size: 23) ?? UIFont.systemFont(ofSize: 23, weight: .bold)
         label.textColor = .ypWhite
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -39,7 +38,6 @@ final class ProfileViewController: UIViewController {
         label.text = "@ekaterina_nov"
         label.font = UIFont(name: "YSDisplay-Regular", size: 13) ?? UIFont.systemFont(ofSize: 13, weight: .regular)
         label.textColor = .ypGray
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -48,7 +46,6 @@ final class ProfileViewController: UIViewController {
         label.text = "Hello, world!"
         label.font = UIFont(name: "YSDisplay-Regular", size: 13) ?? UIFont.systemFont(ofSize: 13, weight: .regular)
         label.textColor = .ypWhite
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -57,13 +54,11 @@ final class ProfileViewController: UIViewController {
         label.text = "Избранное"
         label.font = UIFont(name: "YSDisplay-Bold", size: 23) ?? UIFont.systemFont(ofSize: 23, weight: .bold)
         label.textColor = .ypWhite
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let noPhotoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "Favorites-No Photo"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
 
@@ -72,6 +67,17 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         updateProfileDetails(with: ProfileService.shared.profile)
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
     }
     
     // MARK: - Private Methods
@@ -81,6 +87,15 @@ final class ProfileViewController: UIViewController {
         nameLabel.text = profile.name
         tagLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        // TODO: [Sprint 11] Обновите аватар, используя Kingfisher
     }
     
     private func setupUI() {
@@ -135,6 +150,5 @@ final class ProfileViewController: UIViewController {
     @objc private func didTapLogoutButton() {
         // TODO: - Добавить логику при нажатии на кнопку логаута
         OAuth2TokenStorage().clearToken()
-        self.dismiss(animated: true)
     }
 }

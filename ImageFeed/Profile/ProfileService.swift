@@ -32,6 +32,7 @@ final class ProfileService {
         }
         
         guard token != lastToken else {
+            print("[ProfileService.fetchProfile]: NetworkError - Токен уже использован")
             fulfillCompletionOnTheMainThread(.failure(NetworkError.invalidRequest))
             return
         }
@@ -41,12 +42,12 @@ final class ProfileService {
         
         guard let profileRequest = makeProfileRequest(token: token) else {
             let error = NetworkError.invalidRequest
-            print("Ошибка создания URLRequest: \(error)")
+            print("[ProfileService.fetchProfile]: Ошибка создания URLRequest - \(error)")
             fulfillCompletionOnTheMainThread(.failure(error))
             return
         }
         
-        let task = urlSession.data(for: profileRequest) { [weak self] result in
+        let task = urlSession.objectTask(for: profileRequest) { [weak self] (result: Result<ProfileResult, Error>) in
             guard let self else { return }
             
             defer {
@@ -57,37 +58,29 @@ final class ProfileService {
             }
             
             switch result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let profileResponse = try decoder.decode(ProfileResult.self, from: data)
-                    print("Успешно получен профиль: \(profileResponse)")
-                    let profile = Profile(from: profileResponse)
-                    self.profile = profile
-                    fulfillCompletionOnTheMainThread(.success(profile))
-                } catch {
-                    print("Ошибка декодирования JSON: \(error.localizedDescription)")
-                    fulfillCompletionOnTheMainThread(.failure(error))
-                }
-
+            case .success(let profileResponse):
+                print("[ProfileService.fetchProfile]: Успешно получен профиль: \(profileResponse)")
+                let profile = Profile(from: profileResponse)
+                self.profile = profile
+                fulfillCompletionOnTheMainThread(.success(profile))
             case .failure(let error):
                 switch error {
                 case NetworkError.httpStatusCode(let statusCode):
-                    print("Сервер вернул ошибку: HTTP \(statusCode)")
+                    print("[ProfileService.fetchProfile]: NetworkError - HTTP \(statusCode)")
                 case NetworkError.urlRequestError(let requestError):
-                    print("Ошибка выполнения запроса: \(requestError.localizedDescription)")
+                    print("[ProfileService.fetchProfile]: Ошибка выполнения запроса - \(requestError.localizedDescription)")
                 case NetworkError.urlSessionError:
-                    print("Ошибка сессии URLSession")
+                    print("[ProfileService.fetchProfile]: Ошибка сессии URLSession")
                 default:
-                    print("Неизвестная ошибка: \(error.localizedDescription)")
+                    print("[ProfileService.fetchProfile]: Неизвестная ошибка - \(error.localizedDescription)")
                 }
-                
                 fulfillCompletionOnTheMainThread(.failure(error))
             }
         }
-        
+
         task.resume()
     }
+
     
     // MARK: - Private Methods
     private func makeProfileRequest(token: String) -> URLRequest? {

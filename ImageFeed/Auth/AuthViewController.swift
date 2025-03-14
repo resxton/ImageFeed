@@ -28,8 +28,9 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true) { [weak self] in
-            guard self != nil else { return }
+            guard let self else { return }
             
+            print("[WebViewViewController]: Начало аутентификации с кодом \(code)")
             UIBlockingProgressHUD.show()
             
             OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
@@ -39,11 +40,14 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 
                 switch result {
                 case .success(let token):
-                    print("OAuth Token: \(token)")
+                    print("[WebViewViewController]: Успешная аутентификация, получен токен: \(token)")
                     delegate?.didAuthenticate(self)
                 case .failure(let error):
-                    print("Error fetching token: \(error.localizedDescription)")
-                    break
+                    print("[WebViewViewController]: Ошибка получения токена - \(error.localizedDescription)")
+                    
+                    let alert = UIAlertController(title: "Что-то пошло не так", message: "Не удалось войти в систему", preferredStyle: .alert)
+                    alert.addAction(.init(title: "Ок", style: .cancel))
+                    self.present(alert, animated: true)
                 }
             }
         }

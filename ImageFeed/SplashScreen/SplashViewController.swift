@@ -13,12 +13,9 @@ final class SplashViewController: UIViewController {
     private var gallerySegueID = "GalleryFlow"
     private let storage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     
     // MARK: - Life Cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -31,7 +28,6 @@ final class SplashViewController: UIViewController {
         
         performSegue(withIdentifier: gallerySegueID, sender: self)
     }
-
     
     // MARK: - Private Methods
     private func switchToTabBarController() {
@@ -44,7 +40,6 @@ final class SplashViewController: UIViewController {
             .instantiateViewController(withIdentifier: "TabBarViewController")
            
         window.rootViewController = tabBarController
-        print("changed root to tabbar")
     }
 }
 
@@ -63,6 +58,7 @@ extension SplashViewController {
             }
             
             fetchProfile(token)
+            
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -95,6 +91,19 @@ extension SplashViewController: AuthViewControllerDelegate {
                 // TODO: [Sprint 11] Покажите ошибку получения профиля
                 print("Ошибка получения профиля")
                 break
+            }
+        }
+        
+        guard let username = profileService.profile?.username else {
+            return
+        }
+        
+        profileImageService.fetchProfileImageURL(username: username) { result in
+            switch result {
+            case .success(let success):
+                print(success)
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

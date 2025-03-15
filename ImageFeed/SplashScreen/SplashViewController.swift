@@ -15,16 +15,26 @@ final class SplashViewController: UIViewController {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     
+    private let splashScreeImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "splash_screen_logo"))
+        return imageView
+    }()
+    
     // MARK: - Life Cycle
+    override func viewDidLoad() {
+        setupVC()
+        setupUI()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+#warning("Remove comments")
+//        guard KeychainWrapper.standard.string(forKey: "Auth token") != nil else {
+//            presentAuthScreen()
+//            return
+//        }
         
-        guard KeychainWrapper.standard.string(forKey: "Auth token") != nil else {
-            performSegue(withIdentifier: authSegueID, sender: self)
-            return
-        }
-        
-        performSegue(withIdentifier: gallerySegueID, sender: self)
+        presentGalleryScreen()
     }
     
     // MARK: - Private Methods
@@ -36,29 +46,51 @@ final class SplashViewController: UIViewController {
         
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
-           
+        
         window.rootViewController = tabBarController
+    }
+    
+    private func setupVC() {
+        view.backgroundColor = UIColor.ypBlack
+    }
+    
+    private func setupUI() {
+        view.addSubview(splashScreeImageView)
+        splashScreeImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            // SplashScreenLogo
+            splashScreeImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            splashScreeImageView.widthAnchor.constraint(equalToConstant: 73),
+            splashScreeImageView.heightAnchor.constraint(equalToConstant: 76),
+            splashScreeImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 228)
+        ])
     }
 }
 
 extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == authSegueID {
-            guard let viewController = segue.destination as? AuthViewController else {
-                assertionFailure("Failed to prepare for \(authSegueID)")
-                return
-            }
-            
-            viewController.delegate = self
-        } else if segue.identifier == gallerySegueID {
-            guard let token = KeychainWrapper.standard.string(forKey: "Auth token") else {
-                return
-            }
-            
-            fetchProfile(token)
-        } else {
-            super.prepare(for: segue, sender: sender)
+    private func presentAuthScreen() {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        guard let authVC = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {
+            fatalError("Не удалось создать AuthViewController")
         }
+
+        authVC.delegate = self
+        authVC.modalPresentationStyle = .fullScreen
+        present(authVC, animated: true)
+    }
+
+    private func presentGalleryScreen() {
+        guard let token = KeychainWrapper.standard.string(forKey: "Auth token") else {
+            print("[SplashViewController.presentGalleryScreen]: токен отсутствует")
+            return
+        }
+        fetchProfile(token)
+        switchToTabBarController()
     }
 }
 

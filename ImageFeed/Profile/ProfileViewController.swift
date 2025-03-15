@@ -63,10 +63,11 @@ final class ProfileViewController: UIViewController {
         let imageView = UIImageView(image: UIImage(named: "Favorites-No Photo"))
         return imageView
     }()
-
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupVC()
         setupUI()
         updateProfileDetails(with: ProfileService.shared.profile)
         
@@ -98,8 +99,10 @@ final class ProfileViewController: UIViewController {
         else { return }
         
         avatarImageView.kf.setImage(with: url)
-        
-        // TODO: [Sprint 11] Обновите аватар, используя Kingfisher
+    }
+    
+    private func setupVC() {
+        view.backgroundColor = UIColor.ypBlack
     }
     
     private func setupUI() {
@@ -153,6 +156,6 @@ final class ProfileViewController: UIViewController {
     
     @objc private func didTapLogoutButton() {
         // TODO: - Добавить логику при нажатии на кнопку логаута
-        let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: "Auth token")
+        KeychainWrapper.standard.removeObject(forKey: "Auth token")
     }
 }

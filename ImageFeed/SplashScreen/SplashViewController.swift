@@ -15,7 +15,7 @@ final class SplashViewController: UIViewController {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     
-    private let splashScreeImageView: UIImageView = {
+    private let splashScreenImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "splash_screen_logo"))
         return imageView
     }()
@@ -25,14 +25,14 @@ final class SplashViewController: UIViewController {
         setupVC()
         setupUI()
     }
-    
+        
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 #warning("Remove comments")
-//        guard KeychainWrapper.standard.string(forKey: "Auth token") != nil else {
-//            presentAuthScreen()
-//            return
-//        }
+        guard KeychainWrapper.standard.string(forKey: "Auth token") != nil else {
+            presentAuthScreen()
+            return
+        }
         
         presentGalleryScreen()
     }
@@ -55,8 +55,8 @@ final class SplashViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.addSubview(splashScreeImageView)
-        splashScreeImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(splashScreenImageView)
+        splashScreenImageView.translatesAutoresizingMaskIntoConstraints = false
         
         setupConstraints()
     }
@@ -64,10 +64,10 @@ final class SplashViewController: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             // SplashScreenLogo
-            splashScreeImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            splashScreeImageView.widthAnchor.constraint(equalToConstant: 73),
-            splashScreeImageView.heightAnchor.constraint(equalToConstant: 76),
-            splashScreeImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 228)
+            splashScreenImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            splashScreenImageView.widthAnchor.constraint(equalToConstant: 73),
+            splashScreenImageView.heightAnchor.constraint(equalToConstant: 76),
+            splashScreenImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 228)
         ])
     }
 }
@@ -89,8 +89,8 @@ extension SplashViewController {
             print("[SplashViewController.presentGalleryScreen]: токен отсутствует")
             return
         }
+        
         fetchProfile(token)
-        switchToTabBarController()
     }
 }
 
@@ -111,29 +111,30 @@ extension SplashViewController: AuthViewControllerDelegate {
         profileService.fetchProfile(token) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
             
-            guard let self else { return }
+            guard let self = self else { return }
             
             switch result {
             case .success:
+                guard let username = profileService.profile?.username else {
+                    print("[SplashViewController]: Ошибка — username не найден")
+                    return
+                }
+                
+                profileImageService.fetchProfileImageURL(username: username) { result in
+                    switch result {
+                    case .success(let success):
+                        print(success)
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+                
                 DispatchQueue.main.async {
                     self.switchToTabBarController()
                 }
             case .failure:
                 print("Ошибка получения профиля")
                 break
-            }
-        }
-        
-        guard let username = profileService.profile?.username else {
-            return
-        }
-        
-        profileImageService.fetchProfileImageURL(username: username) { result in
-            switch result {
-            case .success(let success):
-                print(success)
-            case .failure(let error):
-                print(error.localizedDescription)
             }
         }
     }

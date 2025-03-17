@@ -84,11 +84,7 @@ final class ProfileService {
     
     // MARK: - Private Methods
     private func makeProfileRequest(token: String) -> URLRequest? {
-        guard let url = URL(string: "https://api.unsplash.com/me") else {
-            return nil
-        }
-        
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: Constants.profileBaseURL)
         request.httpMethod = "GET"
         
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

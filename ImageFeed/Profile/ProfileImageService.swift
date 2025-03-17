@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftKeychainWrapper
 
 final class ProfileImageService {
     // MARK: - Public Properties
@@ -88,10 +87,9 @@ final class ProfileImageService {
     
     // MARK: - Private Methods
     private func makeProfileImageRequest(username: String) -> URLRequest? {
-        guard let baseURL = URL(string: "https://api.unsplash.com"),
-              let url = URL(
+        guard let url = URL(
                 string: "/users/\(username)",
-                relativeTo: baseURL
+                relativeTo: Constants.defaultBaseURL
               ) else {
             return nil
         }
@@ -99,7 +97,7 @@ final class ProfileImageService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        guard let token = KeychainWrapper.standard.string(forKey: "Auth token") else { return nil }
+        guard let token = OAuth2TokenStorage().token else { return nil }
         
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request

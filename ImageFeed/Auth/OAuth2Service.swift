@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftKeychainWrapper
 
 final class OAuth2Service {
     // MARK: - Public Properties
@@ -59,11 +58,7 @@ final class OAuth2Service {
             switch result {
             case .success(let tokenResponse):
                 let token = tokenResponse.accessToken
-                let isSuccess = KeychainWrapper.standard.set(token, forKey: "Auth token")
-                guard isSuccess else {
-                    print("[OAuth2Service.fetchOAuthToken]: Ошибка сохранения токена: \(tokenResponse.accessToken)")
-                    return
-                }
+                OAuth2TokenStorage().token = token
                 print("[OAuth2Service.fetchOAuthToken]: Успешно получен токен: \(tokenResponse.accessToken)")
                 fulfillCompletionOnTheMainThread(.success(tokenResponse.accessToken))
             case .failure(let error):

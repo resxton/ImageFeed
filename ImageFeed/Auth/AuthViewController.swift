@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ProgressHUD
 
 final class AuthViewController: UIViewController {
     // MARK: - Public Properties
@@ -22,6 +21,13 @@ final class AuthViewController: UIViewController {
             webViewController.delegate = self
         }
     }
+    
+    // MARK: - Private Methods
+    private func presentAlert(title: String, message: String?, preferredStyle: UIAlertController.Style) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+        alert.addAction(.init(title: "ОК", style: .cancel))
+        present(alert, animated: true)
+    }
 }
 
 // MARK: - WebViewViewControllerDelegate
@@ -29,12 +35,10 @@ extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true) { [weak self] in
             guard let self else { return }
-            
             UIBlockingProgressHUD.show()
             
             OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
                 guard let self else { return }
-                
                 UIBlockingProgressHUD.dismiss()
                 
                 switch result {
@@ -43,10 +47,11 @@ extension AuthViewController: WebViewViewControllerDelegate {
                     delegate?.didAuthenticate(self)
                 case .failure(let error):
                     print("[WebViewViewController]: Ошибка получения токена - \(error.localizedDescription)")
-                    
-                    let alert = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось войти в систему", preferredStyle: .alert)
-                    alert.addAction(.init(title: "ОК", style: .cancel))
-                    self.present(alert, animated: true)
+                    DispatchQueue.main.async {
+                        self.presentAlert(title: "Что-то пошло не так(",
+                                     message: "Не удалось войти в систему",
+                                     preferredStyle: .alert)
+                    }
                 }
             }
         }

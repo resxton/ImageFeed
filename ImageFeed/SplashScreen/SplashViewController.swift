@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
     // MARK: - Private Properties
@@ -28,12 +27,10 @@ final class SplashViewController: UIViewController {
         
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-#warning("Remove comments")
-        guard KeychainWrapper.standard.string(forKey: "Auth token") != nil else {
+        guard OAuth2TokenStorage().token != nil else {
             presentAuthScreen()
             return
         }
-        
         presentGalleryScreen()
     }
     
@@ -85,7 +82,7 @@ extension SplashViewController {
     }
 
     private func presentGalleryScreen() {
-        guard let token = KeychainWrapper.standard.string(forKey: "Auth token") else {
+        guard let token = OAuth2TokenStorage().token else {
             print("[SplashViewController.presentGalleryScreen]: токен отсутствует")
             return
         }
@@ -98,7 +95,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
         
-        guard let token = KeychainWrapper.standard.string(forKey: "Auth token") else {
+        guard let token = OAuth2TokenStorage().token else {
             return
         }
         

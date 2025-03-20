@@ -11,24 +11,27 @@ final class SplashViewController: UIViewController {
     // MARK: - Private Properties
     private var authSegueID = "AuthFlow"
     private var gallerySegueID = "GalleryFlow"
-    private let storage = OAuth2TokenStorage()
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    
+    private let splashScreenImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "splash_screen_logo"))
+        return imageView
+    }()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
-        super.viewDidLoad()
+        setupVC()
+        setupUI()
     }
-    
+        
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // OAuth2TokenStorage().clearToken()
-        
-        guard storage.token != nil else {
-            performSegue(withIdentifier: authSegueID, sender: self)
+        guard OAuth2TokenStorage().token != nil else {
+            presentAuthScreen()
             return
         }
-        
-        performSegue(withIdentifier: gallerySegueID, sender: self)
+        presentGalleryScreen()
     }
     
     // MARK: - Private Methods
@@ -40,30 +43,96 @@ final class SplashViewController: UIViewController {
         
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
-           
+        
         window.rootViewController = tabBarController
-        print("changed root to tabbar")
+    }
+    
+    private func setupVC() {
+        view.backgroundColor = UIColor.ypBlack
+    }
+    
+    private func setupUI() {
+        view.addSubview(splashScreenImageView)
+        splashScreenImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            // SplashScreenLogo
+            splashScreenImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            splashScreenImageView.widthAnchor.constraint(equalToConstant: 73),
+            splashScreenImageView.heightAnchor.constraint(equalToConstant: 76),
+            splashScreenImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 228)
+        ])
     }
 }
 
 extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == authSegueID {
-            guard let viewController = segue.destination as? AuthViewController else {
-                assertionFailure("Failed to prepare for \(authSegueID)")
-                return
-            }
-            
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
+    private func presentAuthScreen() {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        guard let authVC = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {
+            fatalError("Не удалось создать AuthViewController")
         }
+
+        authVC.delegate = self
+        authVC.modalPresentationStyle = .fullScreen
+        present(authVC, animated: true)
+    }
+
+    private func presentGalleryScreen() {
+        guard let token = OAuth2TokenStorage().token else {
+            print("[SplashViewController.presentGalleryScreen]: токен отсутствует")
+            return
+        }
+        
+        fetchProfile(token)
     }
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
-        switchToTabBarController()
+        
+        guard let token = OAuth2TokenStorage().token else {
+            return
+        }
+        
+        fetchProfile(token)
+    }
+    
+    private func fetchProfile(_ token: String) {
+        UIBlockingProgressHUD.show()
+        
+        profileService.fetchProfile(token) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                guard let username = profileService.profile?.username else {
+                    print("[SplashViewController]: Ошибка — username не найден")
+                    return
+                }
+                
+                profileImageService.fetchProfileImageURL(username: username) { result in
+                    switch result {
+                    case .success(let success):
+                        print(success)
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    self.switchToTabBarController()
+                }
+            case .failure:
+                print("Ошибка получения профиля")
+                break
+            }
+        }
     }
 }

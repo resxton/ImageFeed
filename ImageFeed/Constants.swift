@@ -16,7 +16,14 @@ enum Constants {
         if let url = URL(string: "https://api.unsplash.com") {
             return url
         } else {
-            fatalError("Invalid URL for defaultBaseURL") // Или можно использовать другое поведение
+            fatalError("Invalid URL for defaultBaseURL")
+        }
+    }()
+    static let profileBaseURL: URL = {
+        if let url = URL(string: "https://api.unsplash.com/me") {
+            return url
+        } else {
+            fatalError("Invalid URL for profileBaseURL")
         }
     }()
 }

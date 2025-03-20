@@ -10,57 +10,72 @@ import Foundation
 final class OAuth2Service {
     // MARK: - Public Properties
     static let shared = OAuth2Service()
-    let storage = OAuth2TokenStorage()
+    
+    // MARK: - Private Properties
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
     
     // MARK: - Initializers
     private init() {}
     
     // MARK: - Public Methods
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        
         let fulfillCompletionOnTheMainThread: (Result<String, Error>) -> Void = { result in
             DispatchQueue.main.async {
                 completion(result)
             }
         }
         
+        guard lastCode != code else {
+            print("[OAuth2Service.fetchOAuthToken]: NetworkError - Код уже использован")
+            fulfillCompletionOnTheMainThread(.failure(NetworkError.invalidRequest))
+            return
+        }
+
+        task?.cancel()
+        lastCode = code
+        
         guard let tokenRequest = makeOAuthTokenRequest(code: code) else {
             let error = NetworkError.invalidRequest
-            print("Ошибка создания URLRequest: \(error)")
+            print("[OAuth2Service.fetchOAuthToken]: Ошибка создания URLRequest - \(error)")
             fulfillCompletionOnTheMainThread(.failure(error))
             return
         }
         
-        let task = URLSession.shared.data(for: tokenRequest) { [weak self] result in
+        let task = urlSession.objectTask(for: tokenRequest) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             guard let self else { return }
             
-            switch result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let tokenResponse = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                    self.storage.token = tokenResponse.accessToken
-                    print("Успешно получен токен: \(tokenResponse.accessToken)")
-                    fulfillCompletionOnTheMainThread(.success(tokenResponse.accessToken))
-                } catch {
-                    print("Ошибка декодирования JSON: \(error.localizedDescription)")
-                    fulfillCompletionOnTheMainThread(.failure(error))
+            defer {
+                DispatchQueue.main.async {
+                    self.task = nil
+                    self.lastCode = nil
                 }
+            }
+            
+            switch result {
+            case .success(let tokenResponse):
+                let token = tokenResponse.accessToken
+                OAuth2TokenStorage().token = token
+                print("[OAuth2Service.fetchOAuthToken]: Успешно получен токен: \(tokenResponse.accessToken)")
+                fulfillCompletionOnTheMainThread(.success(tokenResponse.accessToken))
             case .failure(let error):
                 switch error {
                 case NetworkError.httpStatusCode(let statusCode):
-                    print("Сервер вернул ошибку: HTTP \(statusCode)")
+                    print("[OAuth2Service.fetchOAuthToken]: NetworkError - HTTP \(statusCode)")
                 case NetworkError.urlRequestError(let requestError):
-                    print("Ошибка выполнения запроса: \(requestError.localizedDescription)")
+                    print("[OAuth2Service.fetchOAuthToken]: Ошибка выполнения запроса - \(requestError.localizedDescription)")
                 case NetworkError.urlSessionError:
-                    print("Ошибка сессии URLSession")
+                    print("[OAuth2Service.fetchOAuthToken]: Ошибка сессии URLSession")
                 default:
-                    print("Неизвестная ошибка: \(error.localizedDescription)")
+                    print("[OAuth2Service.fetchOAuthToken]: Неизвестная ошибка - \(error.localizedDescription)")
                 }
-                
                 fulfillCompletionOnTheMainThread(.failure(error))
             }
         }
-        
+
         task.resume()
     }
     

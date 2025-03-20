@@ -18,6 +18,7 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Private Properties
     private let isDeletingCookie = false
+    private var estimatedProgressObservation: NSKeyValueObservation?
     
     // MARK: - IB Outlets
     @IBOutlet private var webView: WKWebView!
@@ -25,29 +26,24 @@ final class WebViewViewController: UIViewController {
     @IBOutlet private var progressView: UIProgressView!
     
     // MARK: - Life Cycle
-    override func viewWillAppear(_ animated: Bool) {
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
-    }
-    
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         webView.navigationDelegate = self
         setUpBackButton()
         setUpProgressView()
         loadAuthView()
         if isDeletingCookie { clearWebViewCookies() }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
-    }
-    
-    // MARK: - Overrides Methods
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
+        
+        super.viewDidLoad()
+                
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+            options: [],
+            changeHandler: { [weak self] _, _ in
+                guard let self = self else { return }
+                self.updateProgress()
+            })
     }
     
     // MARK: - IB Actions

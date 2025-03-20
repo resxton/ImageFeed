@@ -44,7 +44,6 @@ extension URLSession {
     }
     
     func objectTask<T: Decodable>(for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void) -> URLSessionTask {
-        print(request.url)
         let task = data(for: request) { result in
             switch result {
             case .success(let data):

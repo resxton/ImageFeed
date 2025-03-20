@@ -29,7 +29,10 @@ final class ImagesListViewController: UIViewController {
         setupTableView()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(
+        for segue: UIStoryboardSegue,
+        sender: Any?
+    ) {
         if segue.identifier == showSingleImageSegueIdentifier {
             guard let viewController = segue.destination as? SingleImageViewController,
                   let indexPath = sender as? IndexPath
@@ -46,8 +49,10 @@ final class ImagesListViewController: UIViewController {
     }
     
     // MARK: - Public Methods
-    func configureCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        // Получаем имя изображения для картинки
+    func configureCell(
+        for cell: ImagesListCell,
+        with indexPath: IndexPath
+    ) {
         let imageName = String(indexPath.row)
         guard let cardImage = UIImage(named: imageName) else {
             print("Ошибка: Изображение \(imageName) не найдено")
@@ -64,8 +69,15 @@ final class ImagesListViewController: UIViewController {
             print("Ошибка: Изображение \(likeImageName) не найдено")
         }
     }
-
     
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        
+    }
+
     // MARK: - Private Methods
     private func setupTableView() {
         tableView.rowHeight = 300
@@ -74,11 +86,17 @@ final class ImagesListViewController: UIViewController {
 }
 
 extension ImagesListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         return photosName.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
         
         guard let imagesListCell = cell as? ImagesListCell else {
@@ -92,18 +110,22 @@ extension ImagesListViewController: UITableViewDataSource {
 }
 
 extension ImagesListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // Получаем размер изображения
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
         guard let rawImageSize = UIImage(named: photosName[indexPath.row])?.size else {
             return 300
         }
         
         let imageViewWidth = self.tableView.bounds.size.width - 32
-
         let resultHeight = imageViewWidth * (rawImageSize.height / rawImageSize.width)
         
         return resultHeight

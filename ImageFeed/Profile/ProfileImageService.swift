@@ -59,9 +59,7 @@ final class ProfileImageService {
             }
             
             switch result {
-            case .success(let profileImageResponse):
-                print("[ProfileImageService.fetchProfileImageURL]: Успешно получен аватар: \(profileImageResponse.profileImage.large)")
-                
+            case .success(let profileImageResponse):                
                 let profileImageURL = profileImageResponse.profileImage.large
                 self.avatarURL = profileImageURL
                 fulfillCompletionOnTheMainThread(.success(profileImageURL))

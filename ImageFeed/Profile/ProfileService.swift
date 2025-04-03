@@ -59,7 +59,6 @@ final class ProfileService {
             
             switch result {
             case .success(let profileResponse):
-                print("[ProfileService.fetchProfile]: Успешно получен профиль: \(profileResponse)")
                 let profile = Profile(from: profileResponse)
                 self.profile = profile
                 fulfillCompletionOnTheMainThread(.success(profile))

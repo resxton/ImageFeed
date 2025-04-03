@@ -10,6 +10,7 @@ import UIKit
 final class ImagesListCell: UITableViewCell {
     // MARK: - Public Properties
     static let reuseIdentifier = "ImagesListCell"
+    weak var delegate: ImagesListCellDelegate?
     
     // MARK: - IB Outlets
     @IBOutlet var cardImage: UIImageView!
@@ -49,6 +50,18 @@ final class ImagesListCell: UITableViewCell {
         
         cardImage.kf.cancelDownloadTask()
         cardImage.image = nil
+    }
+    
+    // MARK: - Public methods
+    
+    public func setIsLiked(_ isLiked: Bool) {
+        
+    }
+    
+    // MARK: - IBAction
+    
+    @IBAction func didTapLikeButton() {
+        delegate?.imageListCellDidTapLike(self)
     }
     
     // MARK: - Private Methods

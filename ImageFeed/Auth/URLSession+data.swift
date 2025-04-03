@@ -49,7 +49,6 @@ extension URLSession {
             case .success(let data):
                 do {
                     let decodedResponse = try JSONDecoder().decode(T.self, from: data)
-                    print("[URLSession.objectTask]: Успешно декодировано: \(decodedResponse)")
                     completion(.success(decodedResponse))
                 } catch {
                     print("[URLSession.objectTask]: Ошибка декодирования - \(error.localizedDescription), Данные: \(String(data: data, encoding: .utf8) ?? "nil")")

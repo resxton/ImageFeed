@@ -57,9 +57,7 @@ final class ImagesListService {
 
             switch result {
             case .success(let imagesResponse):
-                print("[ImagesListService.fetchPhotosNextPage]: Успешно получены фотографии: \(imagesResponse.count) шт.")
-
-                let photos = imagesResponse.map { photoResult in
+                let newPhotos = imagesResponse.map { photoResult in
                     Photo(
                         id: photoResult.id,
                         size: CGSize(width: photoResult.width, height: photoResult.height),
@@ -71,9 +69,19 @@ final class ImagesListService {
                     )
                 }
 
-                self.photos.append(contentsOf: photos)
-                fulfillCompletionOnTheMainThread(.success(photos))
+                let uniquePhotos = newPhotos.filter { newPhoto in
+                    !self.photos.contains { $0.id == newPhoto.id }
+                }
+
+                guard !uniquePhotos.isEmpty else {
+                    print("[ImagesListService]: Загруженные фото уже есть в списке, обновление отменено")
+                    return
+                }
+
+                self.photos.append(contentsOf: uniquePhotos)
+                fulfillCompletionOnTheMainThread(.success(uniquePhotos))
                 NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
+
 
             case .failure(let error):
                 print("[ImagesListService.fetchPhotosNextPage]: Ошибка загрузки - \(error.localizedDescription)")
@@ -81,6 +89,45 @@ final class ImagesListService {
             }
         }
 
+        task.resume()
+    }
+    
+    public func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        
+        let fulfillCompletionOnTheMainThread: (Result<Void, Error>) -> Void = { result in
+            DispatchQueue.main.async {
+                completion(result)
+            }
+        }
+        
+        task?.cancel()
+        
+        guard let likeRequest = makeLikeRequest(photoId: photoId, isLike: isLike) else {
+            let error = NetworkError.invalidRequest
+            print("[ImagesListService.changeLike]: Ошибка создания URLRequest - \(error)")
+            fulfillCompletionOnTheMainThread(.failure(error))
+            return
+        }
+        
+        let task = urlSession.objectTask(for: likeRequest) { [weak self] (result: Result<[PhotoResult], Error>) in
+            guard let self else { return }
+            
+            defer {
+                DispatchQueue.main.async {
+                    self.task = nil
+                }
+            }
+            
+            switch result {
+            case .success(let success):
+                fulfillCompletionOnTheMainThread(.success(()))
+            case .failure(let error):
+                print("[ImagesListService.changeLike]: Ошибка загрузки - \(error.localizedDescription)")
+                fulfillCompletionOnTheMainThread(.failure(error))
+            }
+        }
+        
         task.resume()
     }
     
@@ -97,6 +144,23 @@ final class ImagesListService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
+        guard let token = OAuth2TokenStorage().token else { return nil }
+        
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+    
+    private func makeLikeRequest(photoId: String, isLike: Bool) -> URLRequest? {
+        guard let url = URL(
+            string: "/photos/\(photoId)/like",
+            relativeTo: Constants.defaultBaseURL
+        ) else {
+            return nil
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = isLike ? "POST" : "DELETE"
+
         guard let token = OAuth2TokenStorage().token else { return nil }
         
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

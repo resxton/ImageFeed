@@ -41,6 +41,10 @@ final class ImagesListViewController: UIViewController {
                 print("🔄 Данные обновлены, вызываем updateTableViewAnimated()")
                 self.updateTableViewAnimated()
             }
+        
+        imagesListService.fetchPhotosNextPage { result in
+            
+        }
     }
 
     
@@ -85,13 +89,14 @@ final class ImagesListViewController: UIViewController {
             print("Ошибка: заглушка не найдена")
             return
         }
+        
+        cell.cardImage.kf.cancelDownloadTask()
+        cell.cardImage.image = nil
 
         cell.cardImage.kf.setImage(with: url, placeholder: stub, options: nil) { result in
             switch result {
             case .success:
-                DispatchQueue.main.async {
-                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                }
+                print("Success \(photo.id)")
             case .failure(let error):
                 print("Ошибка загрузки изображения: \(error)")
             }
@@ -134,17 +139,23 @@ final class ImagesListViewController: UIViewController {
     
     private func updateTableViewAnimated() {
         let oldCount = photos.count
-        let newCount = imagesListService.photos.count
-        photos = imagesListService.photos
-        if oldCount != newCount {
-            tableView.performBatchUpdates {
-                tableView.insertRows(
-                    at: (oldCount..<newCount)
-                    .map({ IndexPath(row: $0, section: 0) }),
-                    with: .automatic)
-            }
+        let newPhotos = imagesListService.photos
+
+        guard newPhotos.count > oldCount else {
+            print("🔄 Нет новых данных для обновления")
+            return
+        }
+
+        let newPhotosToAdd = Array(newPhotos.suffix(from: oldCount))
+        photos.append(contentsOf: newPhotosToAdd)
+
+        let indexPaths = (oldCount..<photos.count).map { IndexPath(row: $0, section: 0) }
+
+        tableView.performBatchUpdates {
+            tableView.insertRows(at: indexPaths, with: .automatic)
         }
     }
+
 }
 
 extension ImagesListViewController: UITableViewDataSource {
@@ -164,6 +175,8 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imagesListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
+        
+        imagesListCell.delegate = self
         
         configureCell(for: imagesListCell, with: indexPath, from: photos[indexPath.row])
         
@@ -192,4 +205,19 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 }
 
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
 
+        let photo = photos[indexPath.row]
+        
+        imagesListService.changeLike(photoId: photo.id, isLike: true) { result in
+            switch result {
+            case .success(_):
+                cell.setIsLiked()
+            case .failure(let failure):
+                print()
+            }
+        }
+    }
+}

@@ -19,7 +19,7 @@ struct Photo {
 
 struct PhotoResult: Codable {
     let id: String
-    let createdAt: String // Дата приходит как строка, обработаем её отдельно
+    let createdAt: String
     let width: Int
     let height: Int
     let description: String?
@@ -47,6 +47,6 @@ struct UrlsResult: Codable {
 
     enum CodingKeys: String, CodingKey {
         case thumb
-        case large = "regular" // В JSON нет "full", но есть "regular"
+        case large = "regular"
     }
 }

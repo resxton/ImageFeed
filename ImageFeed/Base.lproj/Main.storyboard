@@ -77,6 +77,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
+                                    <action selector="fff" destination="ZBR-yC-K58" eventType="touchUpInside" id="M51-nZ-pCu"/>
                                     <segue destination="rUo-1z-zys" kind="presentation" identifier="ShowWebView" modalPresentationStyle="overFullScreen" id="CFP-78-K4U"/>
                                 </connections>
                             </button>

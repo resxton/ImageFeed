@@ -13,11 +13,8 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - IB Outlets
     @IBOutlet var cardImage: UIImageView!
-    
     @IBOutlet var likeButton: UIButton!
-    
     @IBOutlet var label: UILabel!
-    
     @IBOutlet var gradientView: UIView!
     
     // MARK: - Private Properties
@@ -45,6 +42,13 @@ final class ImagesListCell: UITableViewCell {
         maskLayer.path = maskPath.cgPath
         
         gradientView.layer.mask = maskLayer
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        cardImage.kf.cancelDownloadTask()
+        cardImage.image = nil
     }
     
     // MARK: - Private Methods

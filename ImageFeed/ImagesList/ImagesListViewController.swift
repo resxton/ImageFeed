@@ -89,17 +89,16 @@ final class ImagesListViewController: UIViewController {
         
         cell.cardImage.kf.cancelDownloadTask()
         cell.cardImage.image = nil
-
         cell.cardImage.kf.setImage(with: url, placeholder: stub, options: nil)
-
         cell.cardImage.kf.indicatorType = .activity
         
-        guard let createdAt = photo.createdAt else {
-            print("Ошибка: Дата некорректна")
-            return
-        }
+        let createdAt = photo.createdAt
         
-        cell.label.text = dateFormatter.string(from: createdAt)
+        if let createdAt {
+            cell.label.text = dateFormatter.string(from: createdAt)
+        } else {
+            cell.label.text = "Дата не указана"
+        }
         
         let likeImageName = photo.isLiked ? "Favorites-Active" : "Favorites-No Active"
         

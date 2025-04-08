@@ -16,14 +16,18 @@ final class SingleImageViewController: UIViewController {
     var image: Photo? {
         didSet {
             guard isViewLoaded, let image, let imageURL = URL(string: image.fullImageURL) else { return }
-            
+            isLiked = image.isLiked
             loadImage(from: imageURL)
         }
     }
     
     // MARK: - Private Properties
     private let imagesListService = ImagesListService.shared
-    private var isFavorite = false
+    private var isLiked: Bool = false {
+        didSet {
+            updateLikeButton()
+        }
+    }
 
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -32,6 +36,7 @@ final class SingleImageViewController: UIViewController {
         setupScrollView()
         
         if let image, let imageURL = URL(string: image.fullImageURL) {
+            isLiked = image.isLiked
             loadImage(from: imageURL)
         }
     }
@@ -54,17 +59,12 @@ final class SingleImageViewController: UIViewController {
         guard let image else { return }
         
         UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: image.id, isLike: !image.isLiked) { [weak self] result in
+        imagesListService.changeLike(photoId: image.id, isLike: !isLiked) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(_):
                 UIBlockingProgressHUD.dismiss()
-                let likeImageName = !image.isLiked ? "Favorites-Active" : "Favorites-No Active"
-                if let likeImage = UIImage(named: likeImageName) {
-                    favoritesButton.setImage(likeImage, for: .normal)
-                } else {
-                    print("Ошибка: Изображение \(likeImageName) не найдено")
-                }
+                self.isLiked.toggle()
             case .failure(_):
                 UIBlockingProgressHUD.dismiss()
             }
@@ -89,8 +89,7 @@ final class SingleImageViewController: UIViewController {
     
     private func loadImage(from url: URL) {
         UIBlockingProgressHUD.show()
-        imageView.contentMode = .center
-        imageView.kf.setImage(with: url, placeholder: UIImage(named: "SingleStub"), options: nil) { [weak self] result in
+        imageView.kf.setImage(with: url, options: nil) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let value):
@@ -99,6 +98,15 @@ final class SingleImageViewController: UIViewController {
             case .failure(let error):
                 print("Ошибка загрузки изображения: \(error.localizedDescription)")
             }
+        }
+    }
+    
+    private func updateLikeButton() {
+        let likeImageName = isLiked ? "Favorites-Big Active" : "Favorites-Big No Active"
+        if let likeImage = UIImage(named: likeImageName) {
+            favoritesButton.setImage(likeImage, for: .normal)
+        } else {
+            print("Ошибка: Изображение \(likeImageName) не найдено")
         }
     }
     

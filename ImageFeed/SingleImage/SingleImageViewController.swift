@@ -22,6 +22,7 @@ final class SingleImageViewController: UIViewController {
     }
     
     // MARK: - Private Properties
+    private let imagesListService = ImagesListService.shared
     private var isFavorite = false
 
     // MARK: - Life Cycle
@@ -50,15 +51,24 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapFavoritesButton(_ sender: Any) {
-        if isFavorite {
-            favoritesButton.setImage(UIImage(named: "Favorites-Big No Active"), for: .normal)
-        } else {
-            favoritesButton.setImage(UIImage(named: "Favorites-Big Active"), for: .normal)
+        guard let image else { return }
+        
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: image.id, isLike: !image.isLiked) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(_):
+                UIBlockingProgressHUD.dismiss()
+                let likeImageName = !image.isLiked ? "Favorites-Active" : "Favorites-No Active"
+                if let likeImage = UIImage(named: likeImageName) {
+                    favoritesButton.setImage(likeImage, for: .normal)
+                } else {
+                    print("Ошибка: Изображение \(likeImageName) не найдено")
+                }
+            case .failure(_):
+                UIBlockingProgressHUD.dismiss()
+            }
         }
-        
-        isFavorite.toggle()
-        
-        // TODO: - Добавить логику при нажатии на кнопку лайка
     }
     
     // MARK: - Private Methods

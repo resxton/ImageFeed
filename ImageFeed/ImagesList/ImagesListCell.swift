@@ -71,11 +71,9 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - Private Methods
     private func setupGradient() {
-        guard let ypBlack = UIColor(named: "YP Black") else { return }
-        
         gradientLayer.colors = [
-            ypBlack.withAlphaComponent(0).cgColor,
-            ypBlack.withAlphaComponent(0.2).cgColor
+            UIColor.ypBackground.withAlphaComponent(0).cgColor,
+            UIColor.ypBackground.cgColor
         ]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)

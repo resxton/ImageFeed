@@ -37,8 +37,12 @@ struct PhotoResult: Codable {
         case isLiked = "liked_by_user"
     }
 
+    private static let dateFormatter: ISO8601DateFormatter = {
+        ISO8601DateFormatter()
+    }()
+    
     var date: Date? {
-        return ISO8601DateFormatter().date(from: createdAt)
+        return PhotoResult.dateFormatter.date(from: createdAt)
     }
 }
 

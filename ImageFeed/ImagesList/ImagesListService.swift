@@ -121,7 +121,7 @@ final class ImagesListService {
             }
             
             switch result {
-            case .success(let success):
+            case .success(_):
                 if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
                     let oldPhoto = self.photos[index]
                     let updatedPhoto = Photo(

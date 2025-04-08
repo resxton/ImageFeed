@@ -65,6 +65,7 @@ final class ImagesListService {
                         welcomeDescription: photoResult.description,
                         thumbImageURL: photoResult.urls.thumb,
                         largeImageURL: photoResult.urls.large,
+                        fullImageURL: photoResult.urls.full,
                         isLiked: photoResult.isLiked
                     )
                 }
@@ -110,7 +111,7 @@ final class ImagesListService {
             return
         }
         
-        let task = urlSession.objectTask(for: likeRequest) { [weak self] (result: Result<[PhotoResult], Error>) in
+        let task = urlSession.objectTask(for: likeRequest) { [weak self] (result: Result<LikePhotoResponse, Error>) in
             guard let self else { return }
             
             defer {
@@ -121,6 +122,24 @@ final class ImagesListService {
             
             switch result {
             case .success(let success):
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    let oldPhoto = self.photos[index]
+                    let updatedPhoto = Photo(
+                        id: oldPhoto.id,
+                        size: oldPhoto.size,
+                        createdAt: oldPhoto.createdAt,
+                        welcomeDescription: oldPhoto.welcomeDescription,
+                        thumbImageURL: oldPhoto.thumbImageURL,
+                        largeImageURL: oldPhoto.largeImageURL,
+                        fullImageURL: oldPhoto.fullImageURL,
+                        isLiked: !oldPhoto.isLiked
+                    )
+                    self.photos[index] = updatedPhoto
+                    NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
+                } else {
+                    print("[ImagesListService.changeLike]: Фото с id \(photoId) не найдено в массиве")
+                }
+                
                 fulfillCompletionOnTheMainThread(.success(()))
             case .failure(let error):
                 print("[ImagesListService.changeLike]: Ошибка загрузки - \(error.localizedDescription)")

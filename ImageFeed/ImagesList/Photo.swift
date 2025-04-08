@@ -14,6 +14,7 @@ struct Photo {
     let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String
+    let fullImageURL: String
     let isLiked: Bool
 }
 
@@ -44,9 +45,15 @@ struct PhotoResult: Codable {
 struct UrlsResult: Codable {
     let thumb: String
     let large: String
+    let full: String
 
     enum CodingKeys: String, CodingKey {
         case thumb
         case large = "regular"
+        case full
     }
+}
+
+struct LikePhotoResponse: Codable {
+    let photo: PhotoResult
 }

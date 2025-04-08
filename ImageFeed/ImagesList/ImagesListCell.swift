@@ -55,7 +55,12 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Public methods
     
     public func setIsLiked(_ isLiked: Bool) {
-        
+        let likeImageName = isLiked ? "Favorites-Active" : "Favorites-No Active"
+        if let likeImage = UIImage(named: likeImageName) {
+            likeButton.setImage(likeImage, for: .normal)
+        } else {
+            print("Ошибка: Изображение \(likeImageName) не найдено")
+        }
     }
     
     // MARK: - IBAction

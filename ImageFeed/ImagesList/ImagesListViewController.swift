@@ -38,7 +38,6 @@ final class ImagesListViewController: UIViewController {
                 queue: .main
             ) { [weak self] _ in
                 guard let self else { return }
-                print("🔄 Данные обновлены, вызываем updateTableViewAnimated()")
                 self.updateTableViewAnimated()
             }
         
@@ -46,12 +45,8 @@ final class ImagesListViewController: UIViewController {
             
         }
     }
-
     
-    override func prepare(
-        for segue: UIStoryboardSegue,
-        sender: Any?
-    ) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
             guard let viewController = segue.destination as? SingleImageViewController,
                   let indexPath = sender as? IndexPath
@@ -60,12 +55,14 @@ final class ImagesListViewController: UIViewController {
                 return
             }
             
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
+            let photo = photos[indexPath.row]
+            
+            viewController.image = photo
         } else {
             super.prepare(for: segue, sender: sender)
         }
     }
+
     
     deinit {
         if let observer = imagesListServiceObserver {
@@ -93,15 +90,7 @@ final class ImagesListViewController: UIViewController {
         cell.cardImage.kf.cancelDownloadTask()
         cell.cardImage.image = nil
 
-        cell.cardImage.kf.setImage(with: url, placeholder: stub, options: nil) { result in
-            switch result {
-            case .success:
-                print("Success \(photo.id)")
-            case .failure(let error):
-                print("Ошибка загрузки изображения: \(error)")
-            }
-        }
-
+        cell.cardImage.kf.setImage(with: url, placeholder: stub, options: nil)
 
         cell.cardImage.kf.indicatorType = .activity
         
@@ -142,7 +131,6 @@ final class ImagesListViewController: UIViewController {
         let newPhotos = imagesListService.photos
 
         guard newPhotos.count > oldCount else {
-            print("🔄 Нет новых данных для обновления")
             return
         }
 
@@ -206,18 +194,24 @@ extension ImagesListViewController: UITableViewDelegate {
 }
 
 extension ImagesListViewController: ImagesListCellDelegate {
+    
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-
-        let photo = photos[indexPath.row]
         
-        imagesListService.changeLike(photoId: photo.id, isLike: true) { result in
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { result in
             switch result {
-            case .success(_):
-                cell.setIsLiked()
-            case .failure(let failure):
-                print()
+            case .success:
+                self.photos = self.imagesListService.photos
+                cell.setIsLiked(self.photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                // TODO: Показать ошибку с использованием UIAlertController
             }
         }
     }
+    
 }

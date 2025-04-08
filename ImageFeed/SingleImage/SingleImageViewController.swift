@@ -1,11 +1,5 @@
-//
-//  SingleImageViewController.swift
-//  ImageFeed
-//
-//  Created by Сомов Кирилл on 31.01.2025.
-//
-
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     // MARK: - IB Outlets
@@ -18,13 +12,12 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet private var scrollView: UIScrollView!
     
     // MARK: - Public Properties
-    var image: UIImage? {
+    
+    var image: Photo? {
         didSet {
-            guard isViewLoaded, let image else { return }
-
-            imageView.image = image
-            imageView.frame.size = image.size
-            rescaleAndCenterImageInScrollView(image: image)
+            guard isViewLoaded, let image, let imageURL = URL(string: image.fullImageURL) else { return }
+            
+            loadImage(from: imageURL)
         }
     }
     
@@ -36,10 +29,10 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         
         setupScrollView()
-        guard let image else { return }
-        imageView.image = image
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+        
+        if let image, let imageURL = URL(string: image.fullImageURL) {
+            loadImage(from: imageURL)
+        }
     }
     
     // MARK: - IB Actions
@@ -49,7 +42,7 @@ final class SingleImageViewController: UIViewController {
     
     @IBAction func didTapShareButton(_ sender: Any) {
         let text = "Смотри, какую красоту нашел!"
-        guard let sharingImage = image else { return }
+        guard let sharingImage = imageView.image else { return }
         
         let activityViewController = UIActivityViewController(activityItems: [text, sharingImage], applicationActivities: nil)
         
@@ -82,6 +75,21 @@ final class SingleImageViewController: UIViewController {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
+    private func loadImage(from url: URL) {
+        UIBlockingProgressHUD.show()
+        imageView.contentMode = .center
+        imageView.kf.setImage(with: url, placeholder: UIImage(named: "SingleStub"), options: nil) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            switch result {
+            case .success(let value):
+                self?.imageView.frame.size = value.image.size
+                self?.rescaleAndCenterImageInScrollView(image: value.image)
+            case .failure(let error):
+                print("Ошибка загрузки изображения: \(error.localizedDescription)")
+            }
+        }
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
@@ -120,7 +128,7 @@ extension SingleImageViewController: UIScrollViewDelegate {
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        guard let image else { return }
+        guard let image = imageView.image else { return }
         centerImageInScrollView(image: image)
     }
 }

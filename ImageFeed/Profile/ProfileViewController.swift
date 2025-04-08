@@ -11,6 +11,7 @@ import Kingfisher
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
     private var profileImageServiceObserver: NSObjectProtocol?
+    private let profileLogoutService = ProfileLogoutService.shared
     
     private let avatarImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "Avatar"))
@@ -154,7 +155,6 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapLogoutButton() {
-        // TODO: - Добавить логику при нажатии на кнопку логаута
-        OAuth2TokenStorage().clearToken()
+        profileLogoutService.logout()
     }
 }

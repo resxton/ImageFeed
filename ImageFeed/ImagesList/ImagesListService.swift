@@ -150,6 +150,10 @@ final class ImagesListService {
         task.resume()
     }
     
+    func cleanUp() {
+        photos.removeAll()
+    }
+    
     // MARK: - Private Methods
     private func makeImagesRequest(page: Int?) -> URLRequest? {
         guard let url = URL(

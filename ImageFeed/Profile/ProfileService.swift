@@ -79,7 +79,10 @@ final class ProfileService {
 
         task.resume()
     }
-
+    
+    func cleanUp() {
+        profile = nil
+    }
     
     // MARK: - Private Methods
     private func makeProfileRequest(token: String) -> URLRequest? {

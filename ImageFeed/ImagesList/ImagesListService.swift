@@ -165,9 +165,9 @@ final class ImagesListService {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethods.get.rawValue
         
-        guard let token = OAuth2TokenStorage().token else { return nil }
+        guard let token = OAuth2TokenStorage.shared.token else { return nil }
         
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
@@ -182,9 +182,9 @@ final class ImagesListService {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = isLike ? "POST" : "DELETE"
+        request.httpMethod = isLike ? HTTPMethods.post.rawValue : HTTPMethods.delete.rawValue
 
-        guard let token = OAuth2TokenStorage().token else { return nil }
+        guard let token = OAuth2TokenStorage.shared.token else { return nil }
         
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request

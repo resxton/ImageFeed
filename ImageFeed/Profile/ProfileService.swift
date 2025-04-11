@@ -87,7 +87,7 @@ final class ProfileService {
     // MARK: - Private Methods
     private func makeProfileRequest(token: String) -> URLRequest? {
         var request = URLRequest(url: Constants.profileBaseURL)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethods.get.rawValue
         
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request

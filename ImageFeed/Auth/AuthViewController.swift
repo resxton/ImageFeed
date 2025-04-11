@@ -42,7 +42,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 UIBlockingProgressHUD.dismiss()
                 
                 switch result {
-                case .success(let token):
+                case .success(_):
                     delegate?.didAuthenticate(self)
                 case .failure(let error):
                     print("[WebViewViewController]: Ошибка получения токена - \(error.localizedDescription)")

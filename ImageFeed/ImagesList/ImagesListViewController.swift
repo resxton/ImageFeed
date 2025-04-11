@@ -150,7 +150,7 @@ extension ImagesListViewController: UITableViewDataSource {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        return photos.count
+        photos.count
     }
     
     func tableView(

@@ -27,7 +27,7 @@ final class SplashViewController: UIViewController {
         
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard OAuth2TokenStorage().token != nil else {
+        guard OAuth2TokenStorage.shared.token != nil else {
             presentAuthScreen()
             return
         }
@@ -82,7 +82,7 @@ extension SplashViewController {
     }
 
     private func presentGalleryScreen() {
-        guard let token = OAuth2TokenStorage().token else {
+        guard let token = OAuth2TokenStorage.shared.token else {
             print("[SplashViewController.presentGalleryScreen]: токен отсутствует")
             return
         }
@@ -95,7 +95,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
         
-        guard let token = OAuth2TokenStorage().token else {
+        guard let token = OAuth2TokenStorage.shared.token else {
             return
         }
         
@@ -119,8 +119,8 @@ extension SplashViewController: AuthViewControllerDelegate {
                 
                 profileImageService.fetchProfileImageURL(username: username) { result in
                     switch result {
-                    case .success(let success):
-                        print(success)
+                    case .success(_):
+                        print()
                     case .failure(let error):
                         print(error.localizedDescription)
                     }

@@ -97,9 +97,9 @@ final class ProfileImageService {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethods.get.rawValue
         
-        guard let token = OAuth2TokenStorage().token else { return nil }
+        guard let token = OAuth2TokenStorage.shared.token else { return nil }
         
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request

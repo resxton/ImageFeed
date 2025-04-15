@@ -1,10 +1,3 @@
-//
-//  SplashViewController.swift
-//  ImageFeed
-//
-//  Created by Сомов Кирилл on 21.02.2025.
-//
-
 import UIKit
 
 final class SplashViewController: UIViewController {
@@ -89,6 +82,12 @@ extension SplashViewController {
         
         fetchProfile(token)
     }
+    
+    private func presentAlert(title: String, message: String?, preferredStyle: UIAlertController.Style) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+        alert.addAction(.init(title: "ОК", style: .cancel))
+        present(alert, animated: true)
+    }
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
@@ -131,6 +130,9 @@ extension SplashViewController: AuthViewControllerDelegate {
                 }
             case .failure:
                 print("Ошибка получения профиля")
+                presentAlert(title: "Что-то пошло не так(",
+                             message: "Не удалось войти в систему",
+                             preferredStyle: .alert)
                 break
             }
         }

@@ -8,12 +8,20 @@ public protocol ProfileViewOutput: AnyObject {
 
 final class ProfilePresenter: ProfileViewOutput {
     private weak var view: ProfileViewInput?
-    private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
-    private let logoutService = ProfileLogoutService.shared
+    private let profileService: ProfileServiceProtocol
+    private let profileImageService: ProfileImageServiceProtocol
+    private let logoutService: ProfileLogoutServiceProtocol
     
-    init(view: ProfileViewInput) {
+    init(
+        view: ProfileViewInput,
+        profileService: ProfileServiceProtocol = ProfileService.shared,
+        profileImageService: ProfileImageServiceProtocol = ProfileImageService.shared,
+        logoutService: ProfileLogoutServiceProtocol = ProfileLogoutService.shared
+    ) {
         self.view = view
+        self.profileService = profileService
+        self.profileImageService = profileImageService
+        self.logoutService = logoutService
     }
     
     func viewDidLoad() {

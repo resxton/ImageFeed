@@ -2,6 +2,9 @@
 import XCTest
 
 final class WebViewTests: XCTestCase {
+    
+    // MARK: - WebView + AuthView
+    
     func testViewControllerCallsViewDidLoad() {
         // given
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -100,4 +103,44 @@ final class WebViewTests: XCTestCase {
         // then
         XCTAssertEqual(result, "test code")
     }
+    
+    // MARK: - Profile
+    
+    func testLogoutCalled() {
+        // given
+        let view = SpyProfileView()
+        let logoutService = SpyLogoutService()
+        let presenter = ProfilePresenter(
+            view: view,
+            logoutService: logoutService
+        )
+        
+        // when
+        presenter.didTapLogout()
+        
+        // then
+        XCTAssertTrue(logoutService.didLogout)
+    }
+    
+    func testUpdatedAvatar() {
+        // given
+        let view = SpyProfileView()
+        let profileImageService = StubImageService()
+        let profileService = StubProfileService()
+        let presenter = ProfilePresenter(
+            view: view,
+            profileService: profileService,
+            profileImageService: profileImageService
+        )
+        
+        // when
+        presenter.viewDidLoad()
+        
+        // then
+        XCTAssertTrue(view.didUpdateAvatar)
+    }
+    
+    // MARK: - ImagesList
+    
+    
 }

@@ -9,7 +9,6 @@ public protocol ProfileViewInput: AnyObject {
 final class ProfileViewController: UIViewController, ProfileViewInput {
     // MARK: - Private Properties
     private var profileImageServiceObserver: NSObjectProtocol?
-    private let profileLogoutService = ProfileLogoutService.shared
     private var presenter: ProfileViewOutput!
 
     // MARK: - UI Elements

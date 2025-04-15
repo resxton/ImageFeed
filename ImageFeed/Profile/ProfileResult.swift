@@ -7,11 +7,18 @@
 
 import Foundation
 
-struct ProfileResult: Codable {
+public struct ProfileResult: Codable {
     var username: String
     var firstName: String
     var lastName: String
     var bio: String?
+    
+    public init(username: String, firstName: String, lastName: String, bio: String? = nil) {
+        self.username = username
+        self.firstName = firstName
+        self.lastName = lastName
+        self.bio = bio
+    }
     
     enum CodingKeys: String, CodingKey {
         case username

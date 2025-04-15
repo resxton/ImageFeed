@@ -7,7 +7,11 @@
 
 import UIKit
 
-final class ProfileService {
+public protocol ProfileServiceProtocol {
+    var profile: Profile? { get }
+}
+
+final class ProfileService: ProfileServiceProtocol {
     // MARK: - Public Properties
     static let shared = ProfileService()
     

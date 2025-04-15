@@ -23,6 +23,7 @@ final class ProfileViewController: UIViewController, ProfileViewInput {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "Logout"), for: .normal)
         button.tintColor = .ypRed
+        button.accessibilityIdentifier = "LogoutButton"
         return button
     }()
     

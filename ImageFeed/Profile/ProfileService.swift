@@ -36,7 +36,7 @@ final class ProfileService: ProfileServiceProtocol {
         }
         
         guard token != lastToken else {
-            print("[ProfileService.fetchProfile]: NetworkError - Токен уже использован")
+            print("[ProfileService.fetchProfile]: NetworkError - Токен уже использован", NetworkError.invalidRequest.localizedDescription)
             fulfillCompletionOnTheMainThread(.failure(NetworkError.invalidRequest))
             return
         }

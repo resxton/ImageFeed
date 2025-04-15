@@ -1,10 +1,3 @@
-//
-//  AuthViewController.swift
-//  ImageFeed
-//
-//  Created by Сомов Кирилл on 13.02.2025.
-//
-
 import UIKit
 
 final class AuthViewController: UIViewController {
@@ -38,7 +31,9 @@ final class AuthViewController: UIViewController {
     private func presentAlert(title: String, message: String?, preferredStyle: UIAlertController.Style) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         alert.addAction(.init(title: "ОК", style: .cancel))
-        present(alert, animated: true)
+        if self.presentedViewController == nil {
+            self.present(alert, animated: true)
+        }
     }
 }
 
@@ -58,6 +53,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                     delegate?.didAuthenticate(self)
                 case .failure(let error):
                     print("[WebViewViewController]: Ошибка получения токена - \(error.localizedDescription)")
+                    
                     DispatchQueue.main.async {
                         self.presentAlert(title: "Что-то пошло не так(",
                                      message: "Не удалось войти в систему",

@@ -20,6 +20,8 @@ final class SplashViewController: UIViewController {
         
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        
         guard OAuth2TokenStorage.shared.token != nil else {
             presentAuthScreen()
             return
@@ -128,12 +130,19 @@ extension SplashViewController: AuthViewControllerDelegate {
                 DispatchQueue.main.async {
                     self.switchToTabBarController()
                 }
-            case .failure:
+            case .failure(let error):
                 print("Ошибка получения профиля")
-                presentAlert(title: "Что-то пошло не так(",
-                             message: "Не удалось войти в систему",
-                             preferredStyle: .alert)
-                break
+                if let oauthError = error as? NetworkError {
+                    switch oauthError {
+                    case .invalidRequest:
+                        break
+                    default:
+                        presentAlert(title: "Что-то пошло не так(",
+                                     message: "Не удалось войти в систему",
+                                     preferredStyle: .alert)
+                        break
+                    }
+                }
             }
         }
     }

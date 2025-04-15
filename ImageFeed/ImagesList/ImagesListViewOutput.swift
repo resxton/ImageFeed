@@ -52,8 +52,11 @@ extension ImagesListPresenter: ImagesListViewOutput {
     }
 
     func willDisplayCell(at indexPath: IndexPath) {
-        if indexPath.row == photos.count - 1 {
-            imagesListService.fetchPhotosNextPage { _ in }
+        let testMode = ProcessInfo.processInfo.arguments.contains("testMode")
+        if !testMode {
+            if indexPath.row == photos.count - 1 {
+                imagesListService.fetchPhotosNextPage { _ in }
+            }
         }
     }
 

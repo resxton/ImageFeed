@@ -65,6 +65,8 @@ final class ImagesListViewController: UIViewController {
         cell.label.text = photo.createdAt.map { dateFormatter.string(from: $0) } ?? "Дата не указана"
 
         let likeImageName = photo.isLiked ? "Favorites-Active" : "Favorites-No Active"
+        cell.likeButton.accessibilityIdentifier = photo.isLiked ? "like button on" : "like button off"
+
         let likeImage = UIImage(named: likeImageName)
         cell.likeButton.setImage(likeImage, for: .normal)
     }

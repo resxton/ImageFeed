@@ -58,6 +58,7 @@ final class ImagesListCell: UITableViewCell {
         let likeImageName = isLiked ? "Favorites-Active" : "Favorites-No Active"
         if let likeImage = UIImage(named: likeImageName) {
             likeButton.setImage(likeImage, for: .normal)
+            likeButton.accessibilityLabel = isLiked ? "like button on" : "like button off"
         } else {
             print("Ошибка: Изображение \(likeImageName) не найдено")
         }

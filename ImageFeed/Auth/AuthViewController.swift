@@ -15,10 +15,22 @@ final class AuthViewController: UIViewController {
     private let beforeLoginSegweyID = "ShowWebView"
     
     // MARK: - Overrides
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == beforeLoginSegweyID,
-           let webViewController = segue.destination as? WebViewViewController {
-            webViewController.delegate = self
+        if segue.identifier == beforeLoginSegweyID {
+            guard
+                let webViewViewController = segue.destination as? WebViewViewController
+            else {
+                assertionFailure("Failed to prepare for \(beforeLoginSegweyID)")
+                return
+            }
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewViewController
+            webViewViewController.delegate = self
+        } else {
+            super.prepare(for: segue, sender: sender)
         }
     }
     

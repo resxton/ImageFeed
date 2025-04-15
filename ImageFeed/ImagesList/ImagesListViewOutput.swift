@@ -35,7 +35,7 @@ extension ImagesListPresenter: ImagesListViewOutput {
         imagesListService.fetchPhotosNextPage { _ in }
     }
 
-    @objc private func didReceivePhotosUpdate() {
+    @objc func didReceivePhotosUpdate() {
         let oldCount = photos.count
         let newPhotos = imagesListService.photos
 

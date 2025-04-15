@@ -142,5 +142,24 @@ final class WebViewTests: XCTestCase {
     
     // MARK: - ImagesList
     
-    
+    func testUpdatingPhotos() {
+        // given
+        let view = ImagesListViewSpy()
+        let presenter = ImagesListPresenter(view: view)
+        
+        let photo = Photo(id: "1", size: CGSize(width: 100, height: 100), createdAt: nil, welcomeDescription: nil, thumbImageURL: "", largeImageURL: "", fullImageURL: "", isLiked: false)
+        
+        // when
+        presenter.viewDidLoad()
+        
+        ImagesListService.shared._replacePhotos(forTesting: [photo])
+        
+        NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
+        
+        // then
+        XCTAssertTrue(view.isUpdateTableViewCalled)
+        XCTAssertEqual(view.receivedOldCount, 0)
+        XCTAssertEqual(view.receivedNewPhotos?.count, 1)
+        XCTAssertEqual(view.receivedNewPhotos?.first?.id, "1")
+    }
 }

@@ -11,6 +11,7 @@ import Kingfisher
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
     private var profileImageServiceObserver: NSObjectProtocol?
+    private let profileLogoutService = ProfileLogoutService.shared
     
     private let avatarImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "Avatar"))
@@ -154,7 +155,12 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapLogoutButton() {
-        // TODO: - Добавить логику при нажатии на кнопку логаута
-        OAuth2TokenStorage().clearToken()
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
+        alert.addAction(.init(title: "Нет", style: .cancel))
+        alert.addAction(.init(title: "Да", style: .default, handler: { [weak self] _ in
+            guard let self else { return }
+            profileLogoutService.logout()
+        }))
+        present(alert, animated: true)
     }
 }

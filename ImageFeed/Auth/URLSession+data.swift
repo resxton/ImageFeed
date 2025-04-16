@@ -44,13 +44,11 @@ extension URLSession {
     }
     
     func objectTask<T: Decodable>(for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void) -> URLSessionTask {
-        print(request.url)
         let task = data(for: request) { result in
             switch result {
             case .success(let data):
                 do {
                     let decodedResponse = try JSONDecoder().decode(T.self, from: data)
-                    print("[URLSession.objectTask]: Успешно декодировано: \(decodedResponse)")
                     completion(.success(decodedResponse))
                 } catch {
                     print("[URLSession.objectTask]: Ошибка декодирования - \(error.localizedDescription), Данные: \(String(data: data, encoding: .utf8) ?? "nil")")

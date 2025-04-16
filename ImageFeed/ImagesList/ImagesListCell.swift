@@ -10,14 +10,12 @@ import UIKit
 final class ImagesListCell: UITableViewCell {
     // MARK: - Public Properties
     static let reuseIdentifier = "ImagesListCell"
+    weak var delegate: ImagesListCellDelegate?
     
     // MARK: - IB Outlets
     @IBOutlet var cardImage: UIImageView!
-    
     @IBOutlet var likeButton: UIButton!
-    
     @IBOutlet var label: UILabel!
-    
     @IBOutlet var gradientView: UIView!
     
     // MARK: - Private Properties
@@ -47,13 +45,35 @@ final class ImagesListCell: UITableViewCell {
         gradientView.layer.mask = maskLayer
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        cardImage.kf.cancelDownloadTask()
+        cardImage.image = nil
+    }
+    
+    // MARK: - Public methods
+    
+    public func setIsLiked(_ isLiked: Bool) {
+        let likeImageName = isLiked ? "Favorites-Active" : "Favorites-No Active"
+        if let likeImage = UIImage(named: likeImageName) {
+            likeButton.setImage(likeImage, for: .normal)
+        } else {
+            print("Ошибка: Изображение \(likeImageName) не найдено")
+        }
+    }
+    
+    // MARK: - IBAction
+    
+    @IBAction func didTapLikeButton() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
     // MARK: - Private Methods
     private func setupGradient() {
-        guard let ypBlack = UIColor(named: "YP Black") else { return }
-        
         gradientLayer.colors = [
-            ypBlack.withAlphaComponent(0).cgColor,
-            ypBlack.withAlphaComponent(0.2).cgColor
+            UIColor.ypBackground.withAlphaComponent(0).cgColor,
+            UIColor.ypBackground.cgColor
         ]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)

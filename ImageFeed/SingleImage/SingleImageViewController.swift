@@ -1,11 +1,5 @@
-//
-//  SingleImageViewController.swift
-//  ImageFeed
-//
-//  Created by Сомов Кирилл on 31.01.2025.
-//
-
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     // MARK: - IB Outlets
@@ -18,28 +12,33 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet private var scrollView: UIScrollView!
     
     // MARK: - Public Properties
-    var image: UIImage? {
+    
+    var image: Photo? {
         didSet {
-            guard isViewLoaded, let image else { return }
-
-            imageView.image = image
-            imageView.frame.size = image.size
-            rescaleAndCenterImageInScrollView(image: image)
+            guard isViewLoaded, let image, let imageURL = URL(string: image.fullImageURL) else { return }
+            isLiked = image.isLiked
+            loadImage(from: imageURL)
         }
     }
     
     // MARK: - Private Properties
-    private var isFavorite = false
+    private let imagesListService = ImagesListService.shared
+    private var isLiked: Bool = false {
+        didSet {
+            updateLikeButton()
+        }
+    }
 
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupScrollView()
-        guard let image else { return }
-        imageView.image = image
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+        
+        if let image, let imageURL = URL(string: image.fullImageURL) {
+            isLiked = image.isLiked
+            loadImage(from: imageURL)
+        }
     }
     
     // MARK: - IB Actions
@@ -49,7 +48,7 @@ final class SingleImageViewController: UIViewController {
     
     @IBAction func didTapShareButton(_ sender: Any) {
         let text = "Смотри, какую красоту нашел!"
-        guard let sharingImage = image else { return }
+        guard let sharingImage = imageView.image else { return }
         
         let activityViewController = UIActivityViewController(activityItems: [text, sharingImage], applicationActivities: nil)
         
@@ -57,15 +56,19 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapFavoritesButton(_ sender: Any) {
-        if isFavorite {
-            favoritesButton.setImage(UIImage(named: "Favorites-Big No Active"), for: .normal)
-        } else {
-            favoritesButton.setImage(UIImage(named: "Favorites-Big Active"), for: .normal)
+        guard let image else { return }
+        
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: image.id, isLike: !isLiked) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(_):
+                UIBlockingProgressHUD.dismiss()
+                self.isLiked.toggle()
+            case .failure(_):
+                UIBlockingProgressHUD.dismiss()
+            }
         }
-        
-        isFavorite.toggle()
-        
-        // TODO: - Добавить логику при нажатии на кнопку лайка
     }
     
     // MARK: - Private Methods
@@ -82,6 +85,29 @@ final class SingleImageViewController: UIViewController {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
+    private func loadImage(from url: URL) {
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: url, options: nil) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            switch result {
+            case .success(let value):
+                self?.imageView.frame.size = value.image.size
+                self?.rescaleAndCenterImageInScrollView(image: value.image)
+            case .failure(let error):
+                print("[SingleImage.loadImage]: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func updateLikeButton() {
+        let likeImageName = isLiked ? "Favorites-Big Active" : "Favorites-Big No Active"
+        if let likeImage = UIImage(named: likeImageName) {
+            favoritesButton.setImage(likeImage, for: .normal)
+        } else {
+            print("Ошибка: Изображение \(likeImageName) не найдено")
+        }
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
@@ -120,7 +146,7 @@ extension SingleImageViewController: UIScrollViewDelegate {
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        guard let image else { return }
+        guard let image = imageView.image else { return }
         centerImageInScrollView(image: image)
     }
 }

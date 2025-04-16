@@ -59,7 +59,6 @@ final class ProfileService {
             
             switch result {
             case .success(let profileResponse):
-                print("[ProfileService.fetchProfile]: Успешно получен профиль: \(profileResponse)")
                 let profile = Profile(from: profileResponse)
                 self.profile = profile
                 fulfillCompletionOnTheMainThread(.success(profile))
@@ -80,12 +79,15 @@ final class ProfileService {
 
         task.resume()
     }
-
+    
+    func cleanUp() {
+        profile = nil
+    }
     
     // MARK: - Private Methods
     private func makeProfileRequest(token: String) -> URLRequest? {
         var request = URLRequest(url: Constants.profileBaseURL)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethods.get.rawValue
         
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request

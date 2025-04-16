@@ -58,7 +58,7 @@ final class OAuth2Service {
             switch result {
             case .success(let tokenResponse):
                 let token = tokenResponse.accessToken
-                OAuth2TokenStorage().token = token
+                OAuth2TokenStorage.shared.token = token
                 print("[OAuth2Service.fetchOAuthToken]: Успешно получен токен: \(tokenResponse.accessToken)")
                 fulfillCompletionOnTheMainThread(.success(tokenResponse.accessToken))
             case .failure(let error):
@@ -95,7 +95,7 @@ final class OAuth2Service {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = HTTPMethods.post.rawValue
         return request
     }
 }

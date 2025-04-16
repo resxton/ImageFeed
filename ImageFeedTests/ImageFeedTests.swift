@@ -103,7 +103,9 @@ final class WebViewTests: XCTestCase {
         // then
         XCTAssertEqual(result, "test code")
     }
-    
+}
+
+final class ProfileTests: XCTestCase {
     // MARK: - Profile
     
     func testLogoutCalled() {
@@ -139,6 +141,9 @@ final class WebViewTests: XCTestCase {
         // then
         XCTAssertTrue(view.didUpdateAvatar)
     }
+}
+
+final class ImagesListTests: XCTestCase {
     
     // MARK: - ImagesList
     
@@ -161,5 +166,25 @@ final class WebViewTests: XCTestCase {
         XCTAssertEqual(view.receivedOldCount, 0)
         XCTAssertEqual(view.receivedNewPhotos?.count, 1)
         XCTAssertEqual(view.receivedNewPhotos?.first?.id, "1")
+    }
+    
+    func testLikeButtonTap() {
+        let spyView = SpyView()
+        let service = ImagesListService.shared
+        let presenter = ImagesListPresenter(view: spyView, service: service)
+        
+        let photo = Photo(id: "1", size: CGSize(width: 200, height: 300), createdAt: Date(), welcomeDescription: "Test", thumbImageURL: "", largeImageURL: "", fullImageURL: "", isLiked: false)
+        service._replacePhotos(forTesting: [photo])
+        
+        presenter.didReceivePhotosUpdate()
+        
+        XCTAssertEqual(presenter.photosCount, 1)
+        
+        let indexPath = IndexPath(row: 0, section: 0)
+        presenter.didTapLike(at: indexPath)
+        
+        XCTAssertTrue(spyView.reloadCellCalled)
+        XCTAssertEqual(spyView.reloadCellIndexPath, indexPath)
+        XCTAssertTrue(spyView.reloadCellIsLiked ?? false)
     }
 }

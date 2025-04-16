@@ -62,6 +62,10 @@ extension ImagesListPresenter: ImagesListViewOutput {
 
     func didTapLike(at indexPath: IndexPath) {
         let photo = photos[indexPath.row]
+        #if DEBUG
+        view?.reloadCell(at: indexPath, isLiked: !photo.isLiked)
+        return
+        #endif
         imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
             guard let self else { return }
             switch result {

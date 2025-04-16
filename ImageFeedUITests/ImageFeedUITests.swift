@@ -25,6 +25,7 @@ class ImageFeedUITests: XCTestCase {
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         
         loginTextField.tap()
+        sleep(1)
         loginTextField.typeText(AuthData.login)
         webView.swipeUp()
         

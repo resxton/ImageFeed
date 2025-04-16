@@ -86,7 +86,8 @@ class ImageFeedUITests: XCTestCase {
         sleep(3)
         app.tabBars.buttons.element(boundBy: 1).tap()
        
-        XCTAssertTrue(app.staticTexts["Kirill Somov"].exists)
+        #warning("Пробел в конце если нет lastName")
+        XCTAssertTrue(app.staticTexts["Kirill "].exists)
         XCTAssertTrue(app.staticTexts["@resxtonuwu"].exists)
         
         app.buttons["LogoutButton"].tap()

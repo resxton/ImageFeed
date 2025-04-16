@@ -181,7 +181,7 @@ final class ImagesListTests: XCTestCase {
         XCTAssertEqual(presenter.photosCount, 1)
         
         let indexPath = IndexPath(row: 0, section: 0)
-        presenter.didTapLike(at: indexPath)
+        presenter._didTapLike(at: indexPath)
         
         XCTAssertTrue(spyView.reloadCellCalled)
         XCTAssertEqual(spyView.reloadCellIndexPath, indexPath)

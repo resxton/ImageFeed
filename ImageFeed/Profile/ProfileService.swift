@@ -7,7 +7,11 @@
 
 import UIKit
 
-final class ProfileService {
+public protocol ProfileServiceProtocol {
+    var profile: Profile? { get }
+}
+
+final class ProfileService: ProfileServiceProtocol {
     // MARK: - Public Properties
     static let shared = ProfileService()
     
@@ -32,7 +36,7 @@ final class ProfileService {
         }
         
         guard token != lastToken else {
-            print("[ProfileService.fetchProfile]: NetworkError - Токен уже использован")
+            print("[ProfileService.fetchProfile]: NetworkError - Токен уже использован", NetworkError.invalidRequest.localizedDescription)
             fulfillCompletionOnTheMainThread(.failure(NetworkError.invalidRequest))
             return
         }

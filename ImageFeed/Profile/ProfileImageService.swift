@@ -7,7 +7,11 @@
 
 import UIKit
 
-final class ProfileImageService {
+public protocol ProfileImageServiceProtocol {
+    var avatarURL: String? { get }
+}
+
+final class ProfileImageService: ProfileImageServiceProtocol {
     // MARK: - Public Properties
     static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name("ProfileImageProviderDidChange")

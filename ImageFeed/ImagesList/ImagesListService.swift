@@ -189,4 +189,11 @@ final class ImagesListService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
+    
+#if DEBUG
+    func _replacePhotos(forTesting photos: [Photo]) {
+        self.photos = photos
+        NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: self)
+    }
+#endif
 }

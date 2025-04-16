@@ -1,10 +1,3 @@
-//
-//  AuthViewController.swift
-//  ImageFeed
-//
-//  Created by Сомов Кирилл on 13.02.2025.
-//
-
 import UIKit
 
 final class AuthViewController: UIViewController {
@@ -15,10 +8,22 @@ final class AuthViewController: UIViewController {
     private let beforeLoginSegweyID = "ShowWebView"
     
     // MARK: - Overrides
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == beforeLoginSegweyID,
-           let webViewController = segue.destination as? WebViewViewController {
-            webViewController.delegate = self
+        if segue.identifier == beforeLoginSegweyID {
+            guard
+                let webViewViewController = segue.destination as? WebViewViewController
+            else {
+                assertionFailure("Failed to prepare for \(beforeLoginSegweyID)")
+                return
+            }
+            let authHelper = AuthHelper()
+            let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+            webViewViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewViewController
+            webViewViewController.delegate = self
+        } else {
+            super.prepare(for: segue, sender: sender)
         }
     }
     
@@ -26,7 +31,9 @@ final class AuthViewController: UIViewController {
     private func presentAlert(title: String, message: String?, preferredStyle: UIAlertController.Style) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         alert.addAction(.init(title: "ОК", style: .cancel))
-        present(alert, animated: true)
+        if self.presentedViewController == nil {
+            self.present(alert, animated: true)
+        }
     }
 }
 
@@ -46,6 +53,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                     delegate?.didAuthenticate(self)
                 case .failure(let error):
                     print("[WebViewViewController]: Ошибка получения токена - \(error.localizedDescription)")
+                    
                     DispatchQueue.main.async {
                         self.presentAlert(title: "Что-то пошло не так(",
                                      message: "Не удалось войти в систему",

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Photo {
+public struct Photo {
     let id: String
     let size: CGSize
     let createdAt: Date?
@@ -18,7 +18,7 @@ struct Photo {
     let isLiked: Bool
 }
 
-struct PhotoResult: Codable {
+public struct PhotoResult: Codable {
     let id: String
     let createdAt: String
     let width: Int
@@ -46,7 +46,7 @@ struct PhotoResult: Codable {
     }
 }
 
-struct UrlsResult: Codable {
+public struct UrlsResult: Codable {
     let thumb: String
     let large: String
     let full: String
@@ -58,6 +58,6 @@ struct UrlsResult: Codable {
     }
 }
 
-struct LikePhotoResponse: Codable {
+public struct LikePhotoResponse: Codable {
     let photo: PhotoResult
 }

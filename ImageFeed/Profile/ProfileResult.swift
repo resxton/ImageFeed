@@ -12,7 +12,7 @@ public struct ProfileResult: Decodable {
     let firstName: String?
     let lastName: String?
     let bio: String?
-    
+
     public init(username: String, firstName: String, lastName: String, bio: String? = nil) {
         self.username = username
         self.firstName = firstName

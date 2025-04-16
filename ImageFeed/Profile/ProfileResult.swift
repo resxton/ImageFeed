@@ -7,11 +7,11 @@
 
 import Foundation
 
-public struct ProfileResult: Codable {
-    var username: String
-    var firstName: String
-    var lastName: String
-    var bio: String?
+struct ProfileResult: Decodable {
+    let username: String?
+    let firstName: String?
+    let lastName: String?
+    let bio: String?
     
     public init(username: String, firstName: String, lastName: String, bio: String? = nil) {
         self.username = username

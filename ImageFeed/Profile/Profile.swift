@@ -13,10 +13,10 @@ public struct Profile {
     var loginName: String
     var bio: String?
     
-    public init(from profileResult: ProfileResult) {
-        self.username = profileResult.username
-        self.name = "\(profileResult.firstName) \(profileResult.lastName)"
-        self.loginName = "@\(profileResult.username)"
+    init(from profileResult: ProfileResult) {
+        self.username = profileResult.username ?? ""
+        self.name = "\(profileResult.firstName ?? "") \(profileResult.lastName ?? "")"
+        self.loginName = "@\(profileResult.username ?? "")"
         self.bio = profileResult.bio
     }
 }
